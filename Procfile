@@ -1,1 +1,2 @@
-web: gunicorn wafelinvest.wsgi
+web: gunicorn core.wsgi
+ 
