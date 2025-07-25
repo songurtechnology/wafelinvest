@@ -83,6 +83,10 @@ STATICFILES_DIRS = [
 ]
 
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 # Medya dosyaları (upload edilen dosyalar için)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
