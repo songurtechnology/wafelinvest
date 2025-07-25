@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}Yatırım Paketleri - WafelInvest{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="text-center text-gradient display-5 fw-bold mb-5" style="font-family: 'Poppins', sans-serif;">
+    Güvenli ve Kârlı Yatırım Paketleri
+  </h1>
+
+  {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded-4" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+    {% for package in packages %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100 shadow-lg rounded-4 border-0 hover-card">
+        <div class="card-header border-0 bg-transparent text-center pt-4 pb-2">
+          <h4 class="text-uppercase fw-bold" style="color:
+              {% if 'Basic' in package.name %}#20c997
+              {% elif 'Premium' in package.name %}#0d6efd
+              {% elif 'Master' in package.name %}#fd7e14
+              {% else %}#6c757d
+              {% endif %};
+              letter-spacing: 1.5px;">
+            {{ package.name }}
+          </h4>
+          <span class="badge rounded-pill fs-6 px-3 py-2 mt-2 text-bg-light">
+            <i class="bi 
+              {% if 'Basic' in package.name %}bi-currency-euro
+              {% elif 'Premium' in package.name %}bi-star-fill
+              {% elif 'Master' in package.name %}bi-award-fill
+              {% else %}bi-archive
+              {% endif %} me-1"></i> Paket Detayları
+          </span>
+        </div>
+
+        <div class="card-body px-4 py-3">
+          <h2 class="fw-bold text-center mb-4" style="font-family: 'Montserrat', sans-serif;">
+            €{{ package.price|floatformat:2 }}
+          </h2>
+          <ul class="list-unstyled small text-muted mb-4">
+            <li><i class="bi bi-clock me-2"></i> Süre: 
+              <strong>
+                {% if package.price == 30 or package.price == 50 %}
+                  4 Gün
+                {% elif package.price == 100 or package.price == 150 %}
+                  7 Gün
+                {% elif package.price == 250 or package.price == 1000 %}
+                  12 Gün
+                {% else %}
+                  Bilgi Yok
+                {% endif %}
+              </strong>
+            </li>
+            <li><i class="bi bi-graph-up-arrow me-2"></i> Getiri:
+              <strong>
+                {% if package.price == 30 or package.price == 50 %}
+                  %50
+                {% elif package.price == 100 or package.price == 150 %}
+                  %75
+                {% elif package.price == 250 or package.price == 1000 %}
+                  %100
+                {% else %}
+                  Bilgi Yok
+                {% endif %}
+              </strong>
+            </li>
+            <li><i class="bi bi-shield-check me-2"></i> İptal: <strong>30 Gün İçinde %30 İade</strong></li>
+          </ul>
+
+          <div class="collapse mb-3" id="desc-{{ package.id }}">
+            <p class="text-muted small" style="white-space: pre-line;">
+              {% if package.price == 30 or package.price == 50 %}
+                Bu paket küçük yatırımcılar için idealdir. 4 gün içerisinde %50 getiri sağlar.
+              {% elif package.price == 100 or package.price == 150 %}
+                Orta seviyeli yatırımcılar için uygundur. 7 gün içinde %75 kazanç sunar.
+              {% elif package.price == 250 or package.price == 1000 %}
+                Profesyonel yatırımcılar için özel hazırlanmıştır. 12 gün içinde %100 net kazanç sağlar.
+              {% else %}
+                Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz.
+              {% endif %}
+            </p>
+          </div>
+
+          <div class="d-grid gap-2">
+            <a href="{% url 'package_detail' package.id %}" class="btn btn-outline-info fw-medium shadow-sm rounded-pill">
+              📘 Detaylı Bilgi
+            </a>
+            <button class="btn btn-outline-secondary rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#desc-{{ package.id }}">
+              Özet Bilgiyi Göster / Gizle
+            </button>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white border-0 px-4 pb-4 pt-3">
+          <form method="post" action="{% url 'invest' package.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover">
+              🚀 Yatırıma Başla
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+      <p class="text-muted fs-5 fst-italic">Şu an için tanımlı bir yatırım paketi bulunmamaktadır.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Ek CSS -->
+<style>
+  .hover-card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #0d6efd, #20c997);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-hover:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0.5rem 1rem rgba(11, 94, 215, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.9rem !important;
+    }
+
+    h2 {
+      font-size: 1.6rem !important;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .card-body, .card-footer {
+      padding: 1.2rem !important;
+    }
+  }
+</style>
+{% endblock %}

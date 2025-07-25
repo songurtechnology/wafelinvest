@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}{{ package.name }} - Paket Detayları | WafelInvest{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-9">
+
+      <!-- Başlık -->
+      <div class="text-center mb-5">
+        <h1 class="fw-bold text-uppercase"
+            style="color:
+              {% if 'Basic' in package.name %}#198754
+              {% elif 'Premium' in package.name %}#0d6efd
+              {% elif 'Master' in package.name %}#fd7e14
+              {% else %}#6c757d
+              {% endif %};
+              font-family: 'Poppins', sans-serif;">
+          {{ package.name }}
+        </h1>
+        <div class="mx-auto mt-2" style="width: 80px; height: 5px; border-radius: 2px;
+          background:
+            {% if 'Basic' in package.name %}#198754
+            {% elif 'Premium' in package.name %}#0d6efd
+            {% elif 'Master' in package.name %}#fd7e14
+            {% else %}#6c757d
+            {% endif %};">
+        </div>
+      </div>
+
+      <!-- Paket Kartı -->
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="row g-0">
+          
+          <!-- Sol: Genel Bilgiler -->
+          <div class="col-md-5 p-4 border-end d-flex flex-column justify-content-center bg-light-subtle rounded-start-4">
+            <div class="text-center">
+              <div class="mb-3">
+                <small class="text-muted">Yatırım Tutarı</small>
+                <h2 class="fw-bold display-6 text-success mt-1">€{{ package.price|floatformat:2 }}</h2>
+              </div>
+              <p class="text-muted fst-italic">
+                {{ package.short_description|default:"Yatırımcılara özel avantajlar sunan bu paket, sabit kazanç fırsatları ile öne çıkıyor." }}
+              </p>
+            </div>
+
+            <ul class="list-group list-group-flush mt-4">
+              <li class="list-group-item">
+                <i class="bi bi-clock me-2 text-primary"></i>
+                <strong>Süre:</strong>
+                {% if 'Basic' in package.name %} 4 Gün
+                {% elif 'Premium' in package.name %} 7 Gün
+                {% elif 'Master' in package.name %} 12 Gün
+                {% else %} 30 Gün
+                {% endif %}
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-bar-chart-fill me-2 text-warning"></i>
+                <strong>Getiri:</strong>
+                {% if return_rate > 0 %}
+                  %{{ return_rate|floatformat:0 }} (Toplam: €{{ expected_return|floatformat:2 }})
+                {% else %}
+                  Belirtilmemiş
+                {% endif %}
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-arrow-counterclockwise me-2 text-danger"></i>
+                <strong>İptal:</strong> 30 Gün İçinde %30 İade
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sağ: Açıklama & Yatırım -->
+          <div class="col-md-7 p-5">
+            <h4 class="fw-semibold text-primary mb-3">Paket Açıklaması</h4>
+            <p class="text-muted lh-lg" style="white-space: pre-line;">
+              {{ package.description|default:"Bu yatırım paketi, sabit getirili yatırımlarınızı güvenli bir şekilde değerlendirmeniz için tasarlanmıştır. Süresi boyunca hiçbir ekstra işlem yapmanıza gerek kalmadan vade sonunda kazancınız hesabınıza yansıtılır. Risk yönetimi ve şeffaf ödeme politikası ile yatırımınızı kolayca takip edebilirsiniz." }}
+            </p>
+
+            <form method="post" action="{% url 'invest' package.id %}" class="mt-4">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover">
+                🚀 Bu Pakete Yatırım Yap
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Geri Dön -->
+      <div class="text-center mt-4">
+        <a href="{% url 'packages' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+          <i class="bi bi-arrow-left-circle me-2"></i> Tüm Paketlere Geri Dön
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .btn-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-hover:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    h1 { font-size: 1.75rem !important; }
+    .display-6 { font-size: 2rem !important; }
+    .card { border-radius: 1rem !important; }
+    .col-md-5, .col-md-7 {
+      padding: 1.5rem !important;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .row.g-0 {
+      flex-direction: column;
+    }
+    .border-end {
+      border: none !important;
+    }
+  }
+</style>
+{% endblock %}

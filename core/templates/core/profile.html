@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profilim{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4 text-center text-primary fw-bold">👤 Profilim</h1>
+
+  <div class="row gx-5 gy-4">
+    <!-- Kişisel Bilgiler -->
+    <div class="col-lg-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white fs-5 fw-semibold">
+          📄 Kişisel Bilgiler
+        </div>
+        <div class="card-body">
+          <p><strong>Kullanıcı Adı:</strong> {{ user.username }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+      </div>
+
+      <!-- Getiri Grafiği -->
+      <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-warning text-dark fs-5 fw-semibold">
+          💹 Aylık Getiri Grafiği
+        </div>
+        <div class="card-body">
+          <canvas id="returnsChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Yatırım Özeti -->
+    <div class="col-lg-7">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-success text-white fs-5 fw-semibold">
+          💰 Yatırım Özeti
+        </div>
+        <div class="card-body">
+          {% if summary %}
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Toplam Yatırım:</span>
+                <span class="badge bg-primary rounded-pill">{{ summary.total_invested }} USDT</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Toplam Beklenen Getiri:</span>
+                <span class="badge bg-success rounded-pill">{{ summary.total_return }} USDT</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Bekleyen Ödeme Sayısı:</span>
+                <span class="badge bg-warning rounded-pill">{{ summary.pending_payments }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Aktif Yatırım Var mı?:</span>
+                <span class="badge {% if summary.has_active_investment %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                  {% if summary.has_active_investment %}Evet{% else %}Hayır{% endif %}
+                </span>
+              </li>
+            </ul>
+          {% else %}
+            <p class="text-muted fst-italic">Henüz yatırım yapmadınız.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Aktif Yatırımlar -->
+      {% if countdowns %}
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark fs-5 fw-semibold">
+          ⏳ Aktif Yatırımların Süresi
+        </div>
+        <div class="card-body">
+          <div class="row gy-3">
+            {% for countdown in countdowns %}
+            <div class="col-md-6">
+              <div class="border rounded p-3 d-flex flex-column h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="mb-0 fw-bold">📦 {{ countdown.package }}</h6>
+                  <small class="text-muted">{{ countdown.end_date|date:"d.m.Y H:i" }}</small>
+                </div>
+                <p class="mb-1"><strong>Tutar:</strong> {{ countdown.amount }} USDT</p>
+                <div id="timer-{{ countdown.id }}" class="fs-5 fw-semibold text-danger mt-auto"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Diğer Grafikler -->
+  <div class="row mt-5 gx-5 gy-4">
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white fs-5 fw-semibold">📈 Aylık Yatırım Grafiği</div>
+        <div class="card-body">
+          <canvas id="investmentChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white fs-5 fw-semibold">📊 Paket Dağılımı</div>
+        <div class="card-body">
+          <canvas id="packageChart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scriptler -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const countdowns = {{ countdowns_json|safe }};
+
+    countdowns.forEach(cd => {
+      const endDate = new Date(cd.end_date);
+      const timerElement = document.getElementById(`timer-${cd.id}`);
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = endDate - now;
+
+        if (diff <= 0) {
+          timerElement.innerHTML = "✔ Süre doldu";
+          timerElement.classList.remove("text-danger");
+          timerElement.classList.add("text-success");
+          clearInterval(interval);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        timerElement.innerHTML = `${days}g ${hours}s ${minutes}d ${seconds}sn`;
+      }
+
+      updateCountdown();
+      const interval = setInterval(updateCountdown, 1000);
+    });
+
+    // Aylık Yatırım Grafiği
+    new Chart(document.getElementById('investmentChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: {{ investment_chart.labels|safe }},
+        datasets: [{
+          label: 'Yatırım Miktarı (USDT)',
+          data: {{ investment_chart.data|safe }},
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Paket Dağılımı Grafiği
+    new Chart(document.getElementById('packageChart').getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: {{ package_chart.labels|safe }},
+        datasets: [{
+          data: {{ package_chart.data|safe }},
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#00CC99', '#9966FF', '#FF9F40']
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    // Aylık Getiri Grafiği
+    new Chart(document.getElementById('returnsChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: {{ returns_chart.labels|safe }},
+        datasets: [{
+          label: 'Aylık Getiri (USDT)',
+          data: {{ returns_chart.data|safe }},
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13, 110, 253, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Getiri (USDT)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Ay'
+            }
+          }
+        }
+      }
+    });
+
+  });
+</script>
+{% endblock %}

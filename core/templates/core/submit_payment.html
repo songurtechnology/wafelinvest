@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Ödeme Kanıtı Gönder | WafelInvest{% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+{% block content %}
+<style>
+  /* Genel Body ve Container */
+  body {
+    background: #f9fafb;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+  }
+  .container {
+    max-width: 1600px;
+  }
+
+  /* Başlık alanı */
+  .header-section {
+    background: linear-gradient(90deg, #f9d423, #ff4e50);
+    color: #1a1a1a;
+    border-radius: 15px 15px 0 0;
+    padding: 30px 20px;
+    box-shadow: 0 6px 15px rgba(255, 78, 80, 0.4);
+    text-align: center;
+  }
+  .header-section h2 {
+    font-weight: 900;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    margin-bottom: 0.25rem;
+  }
+  .header-section p {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  /* Kartlar genel */
+  .card-custom {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    background: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(255, 78, 80, 0.3);
+  }
+
+  /* Kart başlıkları */
+  .card-custom h5 {
+    color: #ff4e50;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .card-custom h5 i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: #ff4e50;
+    animation: icon-bounce 2s infinite ease-in-out;
+  }
+
+  /* İkon animasyonu */
+  @keyframes icon-bounce {
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-8px);}
+  }
+
+  /* Liste elemanları */
+  .info-list li {
+    margin-bottom: 0.6rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #34495e;
+  }
+  .info-list li i {
+    color: #ff4e50;
+    margin-right: 8px;
+    font-size: 1.1rem;
+  }
+  .info-list li strong {
+    color: #2c3e50;
+  }
+
+  /* Form alanları */
+  label.form-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ff4e50;
+  }
+  input.form-control-lg {
+    border-radius: 12px;
+    border: 2px solid #ff4e50;
+    font-size: 1.1rem;
+    padding: 0.85rem 1.2rem;
+  }
+  input.form-control-lg:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 8px #ff6b6b;
+  }
+  .form-text {
+    font-weight: 500;
+    color: #7f8c8d;
+  }
+  .invalid-feedback {
+    font-weight: 600;
+    color: #e74c3c;
+  }
+
+  /* Gönder butonu */
+  button.btn-warning {
+    background: linear-gradient(45deg, #ff6b6b, #ff4e50);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 0;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: white;
+    box-shadow: 0 8px 20px rgba(255, 78, 80, 0.6);
+    transition: background 0.4s ease, transform 0.2s ease;
+  }
+  button.btn-warning:hover {
+    background: linear-gradient(45deg, #ff4e50, #ff6b6b);
+    transform: scale(1.05);
+  }
+
+  /* Yönlendirme blokları grid */
+  .platforms-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .platform-card {
+    flex: 1 1 280px;
+    max-width: 320px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    padding: 30px 20px;
+    transition: box-shadow 0.3s ease;
+  }
+  .platform-card:hover {
+    box-shadow: 0 15px 40px rgba(255, 78, 80, 0.3);
+  }
+  .platform-logo {
+    max-width: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
+    animation: fade-scale-in 1s ease forwards;
+  }
+  @keyframes fade-scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .platform-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ff4e50;
+    margin-bottom: 20px;
+  }
+
+  /* Platform butonları */
+  .platform-links a {
+    display: inline-block;
+    margin: 0.25rem 0.7rem;
+    padding: 8px 18px;
+    font-weight: 700;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 0.9rem;
+  }
+  .btn-web {
+    background-color: #34495e;
+    color: #fff;
+  }
+  .btn-web:hover {
+    background-color: #2c3e50;
+    color: #f9fafb;
+  }
+  .btn-appstore {
+    background-color: #0071e3;
+    color: white;
+  }
+  .btn-appstore:hover {
+    background-color: #005bb5;
+    color: #f0f8ff;
+  }
+  .btn-playstore {
+    background-color: #34a853;
+    color: white;
+  }
+  .btn-playstore:hover {
+    background-color: #2c8e40;
+    color: #dff0d8;
+  }
+
+  /* WhatsApp destek */
+  .whatsapp-support {
+    text-align: center;
+    margin-top: 4rem;
+  }
+  .whatsapp-support p {
+    color: #7f8c8d;
+    font-weight: 600;
+  }
+  .whatsapp-btn {
+    background: #25d366;
+    border-radius: 50px;
+    color: white;
+    padding: 12px 40px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+  .whatsapp-btn i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+  .whatsapp-btn:hover {
+    background: #1ebe57;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .container {
+      max-width: 720px;
+      padding: 0 15px;
+    }
+    .platform-card {
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 576px) {
+    .header-section h2 {
+      font-size: 2rem;
+    }
+    .header-section p {
+      font-size: 1rem;
+    }
+    button.btn-warning {
+      font-size: 1.1rem;
+      padding: 12px 0;
+    }
+    .platform-links a {
+      padding: 7px 14px;
+      font-size: 0.85rem;
+    }
+    .whatsapp-btn {
+      font-size: 1rem;
+      padding: 10px 30px;
+    }
+    .whatsapp-btn i {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+
+<div class="container py-5">
+  <!-- Başlık -->
+  <div class="card-custom">
+    <div class="header-section">
+      <h2>💳 Ödeme Kanıtı Gönder</h2>
+      <p>Yatırımınızın işleme alınabilmesi için lütfen ödeme kanıtınızı paylaşın.</p>
+    </div>
+
+          <!-- Platform Yönlendirme Blokları -->
+      <div class="platforms-row">
+
+        <!-- Binance -->
+        <div class="platform-card">
+          <img src="{% static 'images/Binance_Logo.png' %}" alt="Binance" class="platform-logo">
+          <div class="platform-name">Binance</div>
+          <div class="platform-links">
+            <a href="https://www.binance.com/en" target="_blank" rel="noopener" title="Web Sitesi">
+              <i class="bi bi-globe fs-5 me-2"></i>
+            </a>
+            <a href="https://apps.apple.com/app/binance/id1436799971" target="_blank" rel="noopener" title="App Store">
+              <i class="bi bi-apple fs-5 me-2"></i>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.binance.dev" target="_blank" rel="noopener" title="Play Store">
+              <i class="bi bi-google-play fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Paribu -->
+        <div class="platform-card">
+          <img src="{% static 'images/paribu.png' %}" alt="Paribu" class="platform-logo">
+          <div class="platform-name">Paribu</div>
+          <div class="platform-links">
+            <a href="https://www.paribu.com" target="_blank" rel="noopener" title="Web Sitesi">
+              <i class="bi bi-globe fs-5 me-2"></i>
+            </a>
+            <a href="https://apps.apple.com/tr/app/paribu/id1261931317" target="_blank" rel="noopener" title="App Store">
+              <i class="bi bi-apple fs-5 me-2"></i>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.paribu" target="_blank" rel="noopener" title="Play Store">
+              <i class="bi bi-google-play fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- BTCTurk -->
+        <div class="platform-card">
+          <img src="{% static 'images/btcturk.png' %}" alt="BTCTurk" class="platform-logo">
+          <div class="platform-name">BTCTurk</div>
+          <div class="platform-links">
+            <a href="https://www.btcturk.com" target="_blank" rel="noopener" title="Web Sitesi">
+              <i class="bi bi-globe fs-5 me-2"></i>
+            </a>
+            <a href="https://apps.apple.com/tr/app/btcturk/id1130886832" target="_blank" rel="noopener" title="App Store">
+              <i class="bi bi-apple fs-5 me-2"></i>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.btcturk.mobile" target="_blank" rel="noopener" title="Play Store">
+              <i class="bi bi-google-play fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bitexen -->
+        <div class="platform-card">
+          <img src="{% static 'images/bitexen.png' %}" alt="Bitexen" class="platform-logo">
+          <div class="platform-name">Bitexen</div>
+          <div class="platform-links">
+            <a href="https://www.bitexen.com" target="_blank" rel="noopener" title="Web Sitesi">
+              <i class="bi bi-globe fs-5 me-2"></i>
+            </a>
+            <a href="https://apps.apple.com/tr/app/bitexen/id1484771801" target="_blank" rel="noopener" title="App Store">
+              <i class="bi bi-apple fs-5 me-2"></i>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.bitexen.android" target="_blank" rel="noopener" title="Play Store">
+              <i class="bi bi-google-play fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    <div class="card-body px-4 py-5">
+
+      <!-- Flash Mesajlar -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Form Hataları -->
+      {% if form.errors %}
+        <div class="alert alert-danger rounded-3">
+          <ul class="mb-0 small">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+
+
+      <!-- Yatırım Bilgileri -->
+      <div class="bg-light border-start border-4 border-warning rounded-3 p-4 mb-5">
+        <h5><i class="bi bi-info-circle"></i> Yatırım Bilgileri</h5>
+        <ul class="list-unstyled info-list">
+          <li><i class="bi bi-box-seam"></i> <strong>Paket:</strong> {{ investment.package.name }}</li>
+          <li><i class="bi bi-currency-euro"></i> <strong>Tutar:</strong> <span class="text-success">€{{ investment.amount }}</span></li>
+          <li><i class="bi bi-calendar"></i> <strong>Başlangıç:</strong> {{ investment.created_at|date:"d.m.Y H:i" }}</li>
+        </ul>
+      </div>
+
+      <!-- Cüzdan Bilgileri -->
+      <div class="bg-light border-start border-4 border-warning rounded-3 p-4 mb-5">
+        <h5><i class="bi bi-wallet2"></i> Kripto Cüzdan Bilgileri</h5>
+        <ul class="list-unstyled info-list">
+          <li><i class="bi bi-wallet2"></i> <strong>Cüzdan:</strong> {{ crypto_wallet.name }}</li>
+          <li><i class="bi bi-diagram-3"></i> <strong>Ağ:</strong> {{ crypto_wallet.network }}</li>
+          <li>
+            <i class="bi bi-code-slash"></i> 
+            <strong>Adres:</strong> 
+            <code id="wallet-address" class="text-break">{{ crypto_wallet.address }}</code>
+            <i class="bi bi-clipboard ms-2 text-primary copy-icon" role="button" onclick="copyWalletAddress()" title="Kopyala"></i>
+            <span id="copy-success" class="text-success ms-2 d-none">✔️</span>
+          </li>
+        </ul>
+      </div>
+
+
+      <!-- Ödeme Kanıtı Formu -->
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="investment" value="{{ investment.id }}">
+
+        <div class="mb-4">
+          <label for="{{ form.payment_screenshot.id_for_label }}" class="form-label">
+            Ödeme Kanıtı <span class="text-danger">*</span>
+          </label>
+          {{ form.payment_screenshot|add_class:"form-control form-control-lg" }}
+          <div class="form-text">
+            JPG, PNG ya da PDF formatında maksimum 5 MB dosya yükleyin.
+          </div>
+          <div class="invalid-feedback">Lütfen geçerli bir dosya seçin.</div>
+        </div>
+
+        <div class="d-grid mb-5">
+          <button type="submit" class="btn btn-warning btn-lg fw-bold rounded-pill shadow-sm">
+            🚀 Gönder ve İncelenmesini Bekle
+          </button>
+        </div>
+      </form>
+
+
+
+
+        <!-- WhatsApp Destek -->
+        <div class="whatsapp-support w-100 mt-5">
+          <p>Ödeme kanıtınızı WhatsApp üzerinden göndermek isterseniz, aşağıdaki butonu kullanabilirsiniz:</p>
+          <a href="https://wa.me/1234567890" target="_blank" rel="noopener" class="whatsapp-btn">
+            <i class="bi bi-whatsapp"></i> WhatsApp Destek
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyWalletAddress() {
+    const address = document.getElementById("wallet-address").textContent;
+    navigator.clipboard.writeText(address).then(function () {
+      const success = document.getElementById("copy-success");
+      success.classList.remove("d-none");
+      setTimeout(() => {
+        success.classList.add("d-none");
+      }, 2000);
+    }, function (err) {
+      alert("Kopyalama başarısız oldu.");
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ödeme Alındı | WafelInvest{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-12">
+
+      <!-- Başarı Kartı -->
+      <div class="card text-center border-0 rounded-4 shadow-lg">
+
+        <!-- Başlık -->
+        <div class="bg-success text-white py-5 rounded-top">
+          <i class="bi bi-check-circle-fill display-4 mb-3"></i>
+          <h2 class="fw-bold">Ödeme Kanıtınız Alındı</h2>
+          <p class="mb-0">Yatırım başvurunuz alınmıştır. Onay süreci başladı.</p>
+        </div>
+
+        <!-- İçerik -->
+        <div class="card-body px-4 py-5">
+
+          <!-- Yatırım Özeti -->
+          <div class="mb-4 text-start">
+            <h5 class="text-success fw-semibold mb-3">Yatırım Bilgileriniz</h5>
+            <ul class="list-unstyled small">
+              <li><i class="bi bi-box-seam me-2 text-success"></i><strong>Paket:</strong> {{ investment.package.name }}</li>
+              <li><i class="bi bi-currency-euro me-2 text-success"></i><strong>Tutar:</strong> €{{ investment.amount }}</li>
+              <li><i class="bi bi-calendar-check me-2 text-success"></i><strong>Gönderim Tarihi:</strong> {{ investment.created_at|date:"d.m.Y H:i" }}</li>
+            </ul>
+          </div>
+
+          <!-- Bilgilendirme -->
+          <div class="alert alert-info rounded-3 small text-start">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Ödemeniz onaylandığında size e-posta ve panel üzerinden bilgilendirme yapılacaktır.
+          </div>
+
+          <!-- WhatsApp Destek -->
+          {% if whatsapp_link %}
+          <div class="mt-4">
+            <p class="text-muted mb-2">Herhangi bir sorunuz varsa bizimle iletişime geçebilirsiniz:</p>
+            <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-outline-success rounded-pill px-4">
+              <i class="bi bi-whatsapp me-2"></i>WhatsApp Destek Hattı
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Ana Sayfaya Dön -->
+          <div class="mt-5">
+            <a href="{% url 'home' %}" class="btn btn-warning fw-bold px-5 py-2 rounded-pill shadow-sm">
+              Ana Sayfaya Dön
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

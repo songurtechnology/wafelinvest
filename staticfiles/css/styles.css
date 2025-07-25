@@ -1,0 +1,208 @@
+/* styles.css - WafelInvest Projesine Özel Gelişmiş CSS */
+
+/* Temel yapı ve font */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease-in-out;
+    background-color: white;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    color: #212529 !important;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+    color: #ffc107 !important;
+    text-decoration: underline;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+    color: #212529 !important;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #ffc107 !important;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem 0;
+    text-align: center;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-top: auto;
+}
+
+footer a {
+    color: #ffc107;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Alert animasyonu */
+.alert {
+    animation: fadeInDown 0.4s ease-in-out;
+    border-radius: 0.5rem;
+}
+
+/* Animasyon */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Kartlar */
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+    background-color: #ffffff;
+}
+
+.card:hover {
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.10);
+}
+
+/* Başlık stilleri */
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #343a40;
+}
+
+/* Formlar */
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+input.form-control,
+select.form-control,
+textarea.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255,193,7,0.25);
+}
+
+/* Geniş Buton */
+.btn-wide {
+    width: 100%;
+}
+
+/* Özel Butonlar */
+.btn-warning {
+    font-weight: 600;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+}
+
+.btn-outline-success {
+    border-radius: 999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Başarılı ödeme kutusu */
+.success-card {
+    background: linear-gradient(145deg, #e0ffe0, #ffffff);
+    border-left: 5px solid #28a745;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+}
+
+/* Kripto adres kopyalama */
+.text-break {
+    word-break: break-all;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .card {
+        border-radius: 0.75rem;
+    }
+}
+
+/* Ekstra Küçük Ekranlar */
+@media (max-width: 480px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    .form-control {
+        font-size: 0.95rem;
+    }
+
+    .btn-lg {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+    }
+}

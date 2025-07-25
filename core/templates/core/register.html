@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Kayıt Ol - WafelInvest{% endblock %}
+
+{% block extra_head %}
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+<style>
+  /* Kapsayıcı ve kart */
+  .register-card {
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(13, 110, 253, 0.25);
+    overflow: hidden;
+  }
+
+  /* Header görsel ve renk */
+  .register-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    color: white;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 1.75rem;
+    user-select: none;
+  }
+
+  /* Form içi padding */
+  .register-body {
+    padding: 2rem 2.5rem;
+  }
+
+  /* Form label animasyonu */
+  .form-floating > label {
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  /* Input focus animasyonu */
+  .form-control:focus {
+    border-color: #6610f2;
+    box-shadow: 0 0 8px rgba(102,16,242,0.6);
+  }
+
+  /* Geçerli ve hatalı input ikonları */
+  .input-feedback-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    pointer-events: none;
+  }
+
+  /* Başarılı input */
+  .is-valid ~ .input-feedback-icon {
+    color: #198754; /* Bootstrap green */
+  }
+
+  /* Hatalı input */
+  .is-invalid ~ .input-feedback-icon {
+    color: #dc3545; /* Bootstrap red */
+  }
+
+  /* Hata mesajları */
+  .invalid-feedback {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* Güçlü butonlar */
+  .btn-primary {
+    border-radius: 2rem;
+    font-weight: 700;
+    padding: 1rem 1.5rem;
+    font-size: 1.15rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0.5rem 1rem rgba(13,110,253,0.4);
+  }
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #6610f2;
+    box-shadow: 0 0.75rem 1.5rem rgba(102,16,242,0.7);
+    outline: none;
+    transform: scale(1.05);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* Link */
+  .form-text a {
+    font-weight: 600;
+    color: #6610f2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .form-text a:hover,
+  .form-text a:focus {
+    color: #0d6efd;
+    text-decoration: underline;
+  }
+
+  /* Responsive düzen */
+  @media (max-width: 576px) {
+    .register-body {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+      <div class="card register-card shadow-sm border-0">
+
+        <!-- Header -->
+        <div class="register-header">
+          <i class="bi bi-shield-lock-fill me-2"></i> Yeni Hesap Oluşturun
+        </div>
+
+        <!-- Body / Form -->
+        <div class="register-body">
+
+          <p class="text-center text-muted mb-4 fs-6">
+            WafelInvest ailesine katılarak finansal geleceğinizi güvence altına alın. Basit, hızlı ve güvenli kayıt süreciyle hemen yatırım yapmaya başlayın.
+          </p>
+
+          <!-- Mesajlar -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if form.errors %}
+            <div class="alert alert-danger mb-4" role="alert" aria-live="assertive" aria-atomic="true">
+              Lütfen aşağıdaki alanları kontrol edip düzeltin.
+            </div>
+          {% endif %}
+
+          <form method="POST" novalidate class="needs-validation" aria-label="Kayıt Formu" id="registerForm">
+            {% csrf_token %}
+
+            <!-- Kullanıcı Adı -->
+            <div class="form-floating mb-4 position-relative">
+              {{ form.username|add_class:"form-control form-control-lg" }} 
+              <label for="{{ form.username.id_for_label }}">Kullanıcı Adı <span class="text-danger">*</span></label>
+              <i class="input-feedback-icon bi"></i>
+              {% for error in form.username.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+              <div id="usernameHelp" class="form-text">
+                En az 4 karakter, boşluk ve özel karakterler kullanmayınız.
+              </div>
+            </div>
+
+            <!-- E-posta -->
+            <div class="form-floating mb-4 position-relative">
+              {{ form.email|add_class:"form-control form-control-lg" }}
+              <label for="{{ form.email.id_for_label }}">E-posta Adresi <span class="text-danger">*</span></label>
+              <i class="input-feedback-icon bi"></i>
+              {% for error in form.email.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+              <div id="emailHelp" class="form-text">
+                Aktif kullandığınız bir e-posta adresi girin. Doğrulama e-postası gönderilecektir.
+              </div>
+            </div>
+
+            <!-- Şifre -->
+            <div class="form-floating mb-4 position-relative">
+              {{ form.password1|add_class:"form-control form-control-lg" }}
+              <label for="{{ form.password1.id_for_label }}">Şifre <span class="text-danger">*</span></label>
+              <i class="input-feedback-icon bi"></i>
+              {% for error in form.password1.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+              <div id="passwordHelp" class="form-text">
+                En az 8 karakter, büyük harf, küçük harf ve sayı içermelidir.
+              </div>
+            </div>
+
+            <!-- Şifre Tekrar -->
+            <div class="form-floating mb-5 position-relative">
+              {{ form.password2|add_class:"form-control form-control-lg" }}
+              <label for="{{ form.password2.id_for_label }}">Şifre Tekrar <span class="text-danger">*</span></label>
+              <i class="input-feedback-icon bi"></i>
+              {% for error in form.password2.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100" 
+              aria-label="Kayıt Ol ve Yatırım Yolculuğuna Başla"
+              id="submitBtn"
+            >
+              Kayıt Ol ve Yatırım Yolculuğuna Başla 🚀
+            </button>
+          </form>
+
+          <p class="mt-4 text-center text-muted small form-text">
+            Hesabınız var mı? <a href="{% url 'login' %}">Giriş Yapın</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Basit frontend validation ve ikon değiştirme
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registerForm');
+    const inputs = form.querySelectorAll('input');
+    
+    inputs.forEach(input => {
+      const icon = input.parentElement.querySelector('.input-feedback-icon');
+
+      // Helper: set icon class based on validity
+      const updateIcon = () => {
+        if (input.classList.contains('is-valid')) {
+          icon.className = 'input-feedback-icon bi bi-check-circle-fill text-success';
+        } else if (input.classList.contains('is-invalid')) {
+          icon.className = 'input-feedback-icon bi bi-x-circle-fill text-danger';
+        } else {
+          icon.className = 'input-feedback-icon bi';
+        }
+      };
+
+      // On input change, run validation
+      input.addEventListener('input', () => {
+        if (!input.checkValidity()) {
+          input.classList.remove('is-valid');
+          input.classList.add('is-invalid');
+        } else {
+          input.classList.remove('is-invalid');
+          input.classList.add('is-valid');
+        }
+        updateIcon();
+      });
+
+      // Initialize icon on page load
+      updateIcon();
+    });
+
+    // Submit event frontend validation (HTML5 validation fallback)
+    form.addEventListener('submit', e => {
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+        inputs.forEach(input => {
+          if (!input.checkValidity()) {
+            input.classList.add('is-invalid');
+          } else {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+          }
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}

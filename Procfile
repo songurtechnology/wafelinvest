@@ -1,0 +1,1 @@
+web: gunicorn wafelinvest.wsgi --chdir wafelinvest

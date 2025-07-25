@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <title>{% block title %}WafelInvest{% endblock %}</title>
+  <meta name="description" content="WafelInvest - Akıllı ve Güvenilir Stroopwafel Yatırım Platformu" />
+  <meta name="author" content="WafelInvest Team" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- AOS Animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+  <style>
+    /* Temel font ve kaydırma */
+    html, body {
+      scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #212529;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Navbar */
+    .navbar {
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+      backdrop-filter: saturate(180%) blur(10px);
+      background-color: rgba(255, 255, 255, 0.95);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .navbar-brand img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 4px;
+    }
+
+    .navbar-brand {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0d6efd;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    .navbar-brand:hover {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .navbar-nav .nav-link {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #495057;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus {
+      color: #0d6efd;
+      background-color: rgba(13, 110, 253, 0.1);
+      text-decoration: none;
+    }
+    .navbar-nav .nav-link.active {
+      color: #0d6efd;
+      font-weight: 700;
+      background-color: rgba(13, 110, 253, 0.15);
+      box-shadow: 0 2px 8px rgb(13 110 253 / 0.3);
+    }
+
+    /* Dropdown */
+    .dropdown-menu {
+      border-radius: 0.75rem;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+      min-width: 12rem;
+      padding: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+    .dropdown-item {
+      transition: background-color 0.25s ease, color 0.25s ease;
+      color: #212529;
+      font-weight: 500;
+      padding: 0.5rem 1.5rem;
+    }
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      background-color: #e7f1ff;
+      color: #0d6efd;
+      outline: none;
+    }
+    .dropdown-divider {
+      margin: 0.5rem 0;
+      border-top: 1px solid #dee2e6;
+    }
+    .dropdown-item.text-danger:hover {
+      background-color: #f8d7da;
+      color: #842029;
+    }
+
+    /* Transition fade wrapper */
+    .transition-fade {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    html.is-animating .transition-fade {
+      opacity: 0;
+    }
+
+    /* Main içerik */
+    main.flex-grow-1 {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      min-height: 70vh;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(90deg, #003973 0%, #E5E5BE 100%);
+      color: #f1f1f1;
+      font-weight: 500;
+      font-size: 0.9rem;
+      user-select: none;
+      box-shadow: 0 -4px 10px rgb(0 0 0 / 0.1);
+      letter-spacing: 0.03em;
+    }
+    footer:hover {
+      color: #dcdcdc;
+    }
+
+    /* Responsive düzenlemeler */
+    @media (max-width: 768px) {
+      .navbar-nav {
+        gap: 0.75rem;
+      }
+      .navbar-brand {
+        font-size: 1.4rem;
+      }
+    }
+
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100 transition-fade" data-barba="wrapper">
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" data-aos="fade-down">
+  <div class="container-fluid px-lg-5 px-3 d-flex justify-content-between align-items-center">
+    
+    <!-- Sol kısım: Logo -->
+    <a class="navbar-brand d-flex align-items-center gap-2 me-auto" href="{% url 'home' %}">
+      <img src="{% static 'images/favicon.png' %}" alt="WafelInvest Logo" width="32" height="32" />
+      <span>WafelInvest</span>
+    </a>
+
+    <!-- Hamburger Menü (Mobil) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Sağ kısım: Menü -->
+    <div class="collapse navbar-collapse justify-content-end ms-auto" id="navbarContent">
+      <ul class="navbar-nav align-items-center gap-lg-3 text-center">
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'packages' %}active{% endif %}" href="{% url 'packages' %}">Paketler</a>
+        </li>
+
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            <i class="bi bi-person-circle fs-5"></i> {{ user.first_name|default:user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-person me-2"></i>Profilim</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Çıkış</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Giriş</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Kayıt Ol</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 py-4" data-barba="container" data-barba-namespace="main">
+    <div class="container" data-aos="fade-up" data-aos-duration="700" data-aos-easing="ease-in-out">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-auto">
+    © 2025 WafelInvest | Akıllı Yatırım Platformu
+  </footer>
+
+  <!-- JS Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://unpkg.com/@barba/core"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+  <script>
+    AOS.init({ once: true, duration: 700, easing: 'ease-in-out' });
+
+    // Barba.js page transitions with GSAP fade effect
+    barba.init({
+      transitions: [{
+        name: 'fade',
+        leave(data) {
+          return gsap.to(data.current.container, { opacity: 0, duration: 0.4 });
+        },
+        enter(data) {
+          return gsap.from(data.next.container, { opacity: 0, duration: 0.4 });
+        }
+      }]
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

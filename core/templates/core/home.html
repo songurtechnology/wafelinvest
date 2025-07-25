@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}WafelInvest – %100 Garantili Yatırım Platformu{% endblock %}
+
+{% block content %}
+<style>
+  /* GENEL */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffffffff 0%, #e3e8f1 100%);
+    color: #222;
+  }
+
+  /* GLASS EFFECT KART */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: default;
+  }
+  .glass-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(31, 38, 135, 0.25);
+  }
+
+  /* HERO */
+  .hero-bg {
+    background: url("{% static 'images/hero-bg.jpeg' %}") center/cover no-repeat fixed;
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-overlay {
+    background: rgba(0, 0, 0, 0.55);
+    padding: 5rem 2rem;
+    border-radius: 24px;
+    max-width: 800px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+  .hero-overlay h1 {
+    font-weight: 900;
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  }
+  .hero-overlay p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .btn-primary-glow {
+    background-color: #ffb400;
+    border: none;
+    color: #222;
+    font-weight: 700;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    box-shadow: 0 0 20px #ffb400aa;
+    transition: all 0.35s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .btn-primary-glow:hover {
+    background-color: #ffa500;
+    box-shadow: 0 0 40px #ffa500cc;
+    color: #fff;
+  }
+
+  /* AVANTAJLAR */
+  .advantages-section {
+    padding: 5rem 1rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .advantages-section h2 {
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.75rem;
+    color: #222;
+  }
+  .advantages-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .advantage-item {
+    flex: 1 1 280px;
+    text-align: center;
+  }
+  .advantage-icon {
+    font-size: 4rem;
+    color: #ffb400;
+    margin-bottom: 1.2rem;
+    transition: color 0.3s ease;
+  }
+  .advantage-item:hover .advantage-icon {
+    color: #ffa500;
+  }
+  .advantage-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #333;
+  }
+  .advantage-desc {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  /* PAKETLER */
+  .packages-section {
+    background: #fff;
+    padding: 5rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .packages-section h2 {
+    font-weight: 900;
+    font-size: 2.75rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #222;
+  }
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+  }
+  .package-card {
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background: linear-gradient(145deg, #fafafa, #eaeaea);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.07);
+    padding: 2rem 1.8rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .package-card:hover {
+    border-color: #ffb400;
+    box-shadow: 0 20px 40px rgba(255, 180, 0, 0.3);
+    transform: translateY(-8px);
+  }
+  .package-title {
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #ffb400;
+    letter-spacing: 0.05em;
+  }
+  .package-desc {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #555;
+  }
+  .package-cta {
+    background: transparent;
+    border: 2px solid #ffb400;
+    padding: 0.75rem 2.5rem;
+    font-weight: 700;
+    color: #ffb400;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .package-cta:hover {
+    background-color: #ffb400;
+    color: #222;
+    box-shadow: 0 0 18px #ffb400cc;
+  }
+
+  /* YORUMLAR */
+  .testimonials-section {
+    padding: 5rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .testimonials-section h2 {
+    font-weight: 900;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #222;
+  }
+  .carousel-item blockquote {
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #444;
+    line-height: 1.6;
+  }
+  .carousel-item footer {
+    margin-top: 1rem;
+    font-weight: 700;
+    color: #777;
+  }
+
+  /* SSS */
+  .faq-section {
+    background: linear-gradient(45deg, #2c3e50, #4ca1af);
+    color: #eee;
+    padding: 5rem 1rem;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    border-radius: 24px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
+  .faq-section h2 {
+    font-weight: 900;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  .accordion-button {
+    background: transparent;
+    color: #eee;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .accordion-button:not(.collapsed) {
+    background: #3a556f;
+    color: #ffb400;
+  }
+  .accordion-body {
+    color: #ddd;
+    font-size: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #fafafaff;
+    padding: 1.5rem 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  footer a {
+    color: #ffb400;
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-overlay h1 {
+      font-size: 2.5rem;
+    }
+    .hero-overlay p {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<!-- HERO SECTION -->
+<header class="hero-bg" role="banner" aria-label="WafelInvest ana sayfa tanıtımı">
+  <div class="hero-overlay">
+    <h1>Dijital Yatırımda Devrim: <br>WafelInvest ile Tanışın</h1>
+    <p>Stroopwafel temelli yatırımlarınızda, sadece 30 günde %100 sabit kazanç fırsatını yakalayın. Güvenilir, hızlı ve şeffaf.</p>
+    {% if not user.is_authenticated %}
+      <a href="{% url 'register' %}" class="btn-primary-glow" aria-label="Yeni yatırımcı olarak kaydolun ve yatırıma başlayın">
+        Yatırıma Başla
+      </a>
+    {% else %}
+      <a href="{% url 'profile' %}" class="btn-primary-glow" aria-label="Profilinizi görüntüleyin">
+        Hesabımı Görüntüle
+      </a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- AVANTAJLAR -->
+<section class="advantages-section" aria-labelledby="advantages-title">
+  <h2 id="advantages-title">Yatırımcı Avantajları</h2>
+  <div class="advantages-grid" role="list">
+    <article class="advantage-item" role="listitem" tabindex="0">
+      <i class="bi bi-currency-euro advantage-icon" aria-hidden="true"></i>
+      <h3 class="advantage-title">%100 Sabit Getiri</h3>
+      <p class="advantage-desc">Yatırımınızın sadece 30 gün içinde iki katına ulaşmasını garantiliyoruz.</p>
+    </article>
+    <article class="advantage-item" role="listitem" tabindex="0">
+      <i class="bi bi-shield-check advantage-icon text-success" aria-hidden="true"></i>
+      <h3 class="advantage-title">Risk Yönetimi</h3>
+      <p class="advantage-desc">30 gün dolmadan çıkış yaparsanız %30 iade garantisi ile güvence altındasınız.</p>
+    </article>
+    <article class="advantage-item" role="listitem" tabindex="0">
+      <i class="bi bi-whatsapp advantage-icon text-success" aria-hidden="true"></i>
+      <h3 class="advantage-title">WhatsApp ile Hızlı Onay</h3>
+      <p class="advantage-desc">Dekont gönderimiyle yatırımınız anında aktif hale gelir, beklemeye gerek yok.</p>
+    </article>
+  </div>
+</section>
+
+<!-- YATIRIM PAKETLERİ -->
+<section class="packages-section" aria-labelledby="packages-title">
+  <h2 id="packages-title">Yatırım Paketlerimiz</h2>
+  <div class="packages-grid">
+    <div class="package-card" tabindex="0" role="group" aria-label="Basic Paket: 100 Euro yatırım, 130 Euro geri ödeme">
+      <h3 class="package-title text-primary">Basic Paket</h3>
+      <p class="package-desc">100€ yatırım → 130€ geri ödeme</p>
+      <a href="{% url 'packages' %}" class="package-cta" aria-label="Basic paket detaylarını gör">Detayları Gör</a>
+    </div>
+    <div class="package-card" tabindex="0" role="group" aria-label="Premium Paket: 250 Euro yatırım, 375 Euro geri ödeme" style="border-color: #ffb400;">
+      <h3 class="package-title text-warning">Premium Paket</h3>
+      <p class="package-desc">250€ yatırım → 375€ geri ödeme</p>
+      <a href="{% url 'packages' %}" class="package-cta" aria-label="Premium paket detaylarını gör">Detayları Gör</a>
+    </div>
+    <div class="package-card" tabindex="0" role="group" aria-label="Master Paket: 500 Euro yatırım, 1000 Euro geri ödeme">
+      <h3 class="package-title text-success">Master Paket</h3>
+      <p class="package-desc">500€ yatırım → 1000€ geri ödeme</p>
+      <a href="{% url 'packages' %}" class="package-cta" aria-label="Master paket detaylarını gör">Detayları Gör</a>
+    </div>
+  </div>
+</section>
+
+<!-- KULLANICI YORUMLARI -->
+<section class="testimonials-section" aria-label="Kullanıcı yorumları">
+  <h2>Kullanıcı Yorumları</h2>
+  <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" aria-live="polite">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <blockquote>
+          "WafelInvest sayesinde ilk yatırımımı yaptım ve 30 gün içinde beklediğim getiriyi aldım. Gerçekten güvenilir bir platform!"
+          <footer>— Ayşe K., Amsterdam</footer>
+        </blockquote>
+      </div>
+      <div class="carousel-item">
+        <blockquote>
+          "WhatsApp üzerinden ödeme kanıtı göndermek çok kolaydı. Onay süreci hızlı ve sorunsuz gerçekleşti."
+          <footer>— Mehmet T., Rotterdam</footer>
+        </blockquote>
+      </div>
+      <div class="carousel-item">
+        <blockquote>
+          "Yatırım paketleri esnek ve herkesin bütçesine uygun. Müşteri hizmetleri çok ilgili."
+          <footer>— Fatma D., İstanbul</footer>
+        </blockquote>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Önceki yorum">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Sonraki yorum">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</section>
+
+<!-- SIKÇA SORULAN SORULAR -->
+<section class="faq-section" aria-labelledby="faq-title">
+  <h2 id="faq-title">Sıkça Sorulan Sorular</h2>
+  <div class="accordion" id="faqAccordion">
+    <div class="accordion-item">
+      <h3 class="accordion-header" id="faqHeading1">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+          WafelInvest'te nasıl yatırım yapabilirim?
+        </button>
+      </h3>
+      <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Siteye üye olduktan sonra uygun paketi seçip, ödeme yaptıktan sonra WhatsApp üzerinden dekont göndermeniz yeterlidir. Onay sonrası yatırımınız aktif olur.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header" id="faqHeading2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+          Yatırım getirisi ne kadar ve ne zaman hesaplanır?
+        </button>
+      </h3>
+      <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yatırım tutarınıza göre %30 ile %100 arasında sabit getiri garantisi vardır. 30 günün sonunda tüm getiriniz hesaplanır ve profilinize yansır.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header" id="faqHeading3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+          Yatırımımı iptal edersem ne olur?
+        </button>
+      </h3>
+      <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          30 gün dolmadan çıkış yaparsanız, yatırımınızın %30'u iade edilir. İade işlemleri admin onayıyla gerçekleşir.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALT BİLGİ -->
+<footer role="contentinfo" aria-label="Site alt bilgisi">
+  <div class="container text-center">
+    <p>&copy; {{ now.year }} WafelInvest. Tüm hakları saklıdır.</p>
+    <p><a href="{% url 'privacy_policy' %}">Gizlilik Politikası</a> | <a href="{% url 'terms' %}">Kullanım Koşulları</a></p>
+  </div>
+</footer>
+{% endblock %}
+
+
