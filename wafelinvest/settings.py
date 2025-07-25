@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-vgz7(815#_eb#&0xh2b=j^r+yb)pl)^!qcmjga8jp@rvyq(@^x
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['wafelinvest.onrender.com']
+ALLOWED_HOSTS = ['wafelinvest.com', 'www.wafelinvest.com']
 
 
 INSTALLED_APPS = [
