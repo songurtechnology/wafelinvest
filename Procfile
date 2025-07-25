@@ -1,1 +1,1 @@
-web: gunicorn wafelinvest.wsgi --chdir wafelinvest
+web: gunicorn wafelinvest.wsgi
