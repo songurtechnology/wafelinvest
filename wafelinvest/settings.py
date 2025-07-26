@@ -5,27 +5,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-vgz7(815#_eb#&0xh2b=j^r+yb)pl)^!qcmjga8jp@rvyq(@^x'
 
-DEBUG = False
+DEBUG = True  # Prod ortamda False yapmayı unutma!
 
-ALLOWED_HOSTS = ['wafelinvest.nl', 'www.wafelinvest.nl']
-
+ALLOWED_HOSTS = ['wafelinvest.nl', 'www.wafelinvest.nl', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',  # whitenoise geliştirme statik servisi için
+    'whitenoise.runserver_nostatic',  # Geliştirme statik servisi için
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
-    'core',
+    'widget_tweaks',  # Form alanları için
+    'core',  # Projenin ana app'i
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # whitenoise statik middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Statik dosyalar için
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',  # Dil ayarları için ekledim
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -43,7 +43,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # login form için önemli
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -55,40 +55,45 @@ WSGI_APPLICATION = 'wafelinvest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # Prod için Postgres öneririm
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 8}},  # minimum 8 karakter
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+# Dil ve saat dilimi ayarları
+LANGUAGE_CODE = 'tr'  # Türkçe arayüz için
+TIME_ZONE = 'Europe/Amsterdam'  # Amsterdam zaman dilimi
+
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 
-# Statik dosyalar için URL ve klasör ayarları
+# Statik dosyalar
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Proje içindeki static klasörünü tanımla (geliştirme için)
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Proje içindeki static klasörü
+    BASE_DIR / 'static',
 ]
 
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-
-# Medya dosyaları (upload edilen dosyalar için)
+# Medya dosyaları (kullanıcı yüklemeleri)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Güvenlik ayarları (prod ortamda aktif olmalı)
+SESSION_COOKIE_SECURE = False  # Prod'da True yap
+CSRF_COOKIE_SECURE = False     # Prod'da True yap
+
+# Login ve redirect ayarları
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'packages'  # Giriş sonrası yönlendirilecek URL
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

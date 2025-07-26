@@ -2,17 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Sum, Count
+from django.db.models import Sum
 from datetime import datetime, timedelta
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
-import calendar
 import json
 
 from .models import (
     Package, Investment, PaymentConfirmation, CryptoWallet,
-    SiteSetting, UserInvestmentSummary
+    SiteSetting, UserInvestmentSummary, Profile
 )
 from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
@@ -50,51 +49,30 @@ def packages(request):
     packages = Package.objects.all()
     return render(request, 'core/packages.html', {'packages': packages})
 
-
 def package_detail(request, package_id):
     package = get_object_or_404(Package, pk=package_id)
-
-    # Getiri oranı (Decimal)
-    if 'Basic' in package.name:
-        return_rate = Decimal('0.30')  # %30
-    elif 'Premium' in package.name:
-        return_rate = Decimal('0.50')  # %50
-    elif 'Master' in package.name:
-        return_rate = Decimal('1.00')  # %100
-    else:
-        return_rate = Decimal('0.00')  # Belirtilmemiş
-
-    # Toplam beklenen getiri (yatırım + getiri)
-    expected_return = package.price * (Decimal('1.00') + return_rate)
-
+    expected_return = calculate_expected_return(package, package.price)
     context = {
         'package': package,
-        'return_rate': return_rate * 100,  # % cinsinden (örn: 30, 50, 100)
+        'return_rate': package.profit_percent,
         'expected_return': expected_return,
     }
-
     return render(request, 'core/package_detail.html', context)
-
 
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.get_or_create(user=user)
             auth_login(request, user)
             messages.success(request, 'Kayıt başarılı! Hoş geldiniz.')
-            return redirect('packages')
+            return redirect('profile')
         else:
-            messages.error(request, 'Formda hata var, lütfen kontrol edin.')
+            messages.error(request, 'Formda hata var, lütfen tekrar kontrol edin.')
     else:
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
-
-def privacy_policy(request):
-    return render(request, 'core/privacy_policy.html')
-
-def terms(request):
-    return render(request, 'core/terms.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -103,10 +81,8 @@ def login_view(request):
             user = form.get_user()
             auth_login(request, user)
             messages.success(request, 'Giriş başarılı.')
-            if user.is_staff or user.is_superuser:
-                return redirect('admin:index')
-            else:
-                return redirect('profile')
+            next_url = request.GET.get('next') or 'profile'
+            return redirect(next_url)
         else:
             messages.error(request, 'Kullanıcı adı veya şifre yanlış.')
     else:
@@ -134,12 +110,12 @@ def invest(request, package_id):
             try:
                 investment.clean()
                 investment.save()
-                messages.success(request, 'Yatırımınız başarıyla kaydedildi. Ödeme dekontu yükleyebilirsiniz.')
+                messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
                 return redirect('submit_payment', investment_id=investment.id)
             except ValidationError as e:
                 form.add_error(None, e)
         else:
-            messages.error(request, 'Formda hata var, lütfen kontrol edin.')
+            messages.error(request, 'Formda hata var.')
     else:
         form = InvestmentForm(profile=profile, package=package)
     return render(request, 'core/invest.html', {'form': form, 'package': package})
@@ -148,9 +124,11 @@ def invest(request, package_id):
 def submit_payment(request, investment_id):
     profile = request.user.profile
     investment = get_object_or_404(Investment, id=investment_id, profile=profile)
+
     if PaymentConfirmation.objects.filter(investment=investment).exists():
         messages.info(request, 'Bu yatırım için zaten ödeme dekontu gönderdiniz.')
-        return redirect('packages')
+        return redirect('profile')
+
     if request.method == 'POST':
         post_data = request.POST.copy()
         post_data['investment'] = str(investment.id)
@@ -160,15 +138,17 @@ def submit_payment(request, investment_id):
             confirmation.investment = investment
             confirmation.save()
             update_user_investment_summary(profile)
-            messages.success(request, 'Ödeme dekontu başarıyla gönderildi.')
+            messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
             return redirect('payment_success')
         else:
-            messages.error(request, 'Lütfen geçerli bir dosya yükleyin.')
+            messages.error(request, 'Geçerli bir dosya yükleyin.')
     else:
         form = PaymentConfirmationForm()
+
     crypto_wallet = CryptoWallet.objects.filter(active=True).first()
     site_setting = SiteSetting.objects.first()
     whatsapp_link = site_setting.whatsapp_support_link if site_setting else "#"
+
     context = {
         'form': form,
         'investment': investment,
@@ -179,7 +159,6 @@ def submit_payment(request, investment_id):
 
 @login_required
 def payment_success(request):
-    messages.success(request, "Ödemeniz başarıyla gönderildi ve onay bekliyor.")
     return render(request, 'core/payment_success.html')
 
 @login_required
@@ -191,13 +170,11 @@ def profile(request):
     profile = user.profile
     summary = UserInvestmentSummary.objects.filter(profile=profile).first()
 
-    # Onaylanmış yatırımları al
     approved_investments = Investment.objects.filter(
         profile=profile,
         status=Investment.STATUS_APPROVED
     ).order_by('approved_at')
 
-    # Vade sayaçları (onay tarihine göre)
     countdowns = []
     for inv in approved_investments:
         if inv.approved_at:
@@ -206,13 +183,12 @@ def profile(request):
                 'id': inv.id,
                 'package': inv.package.name,
                 'amount': float(inv.amount),
-                'end_date': countdown_end.strftime("%Y-%m-%dT%H:%M:%S"),  # ISO format for JS
-                'approved_date': inv.approved_at.strftime("%d.%m.%Y"),  # Kullanıcıya gösterilecek format
+                'end_date': countdown_end.strftime("%Y-%m-%dT%H:%M:%S"),
+                'approved_date': inv.approved_at.strftime("%d.%m.%Y"),
             })
 
-    countdowns_json = json.dumps(countdowns)  # JavaScript için kullanılabilir versiyon
+    countdowns_json = json.dumps(countdowns)
 
-    # Aylık yatırım geçmişi için chart verisi (yatırılan miktar)
     monthly_investments = {}
     for inv in approved_investments:
         key = inv.approved_at.strftime('%Y-%m') if inv.approved_at else inv.created_at.strftime('%Y-%m')
@@ -221,10 +197,8 @@ def profile(request):
     investment_chart_labels = sorted(monthly_investments.keys())
     investment_chart_data = [monthly_investments[label] for label in investment_chart_labels]
 
-    # Paket bazlı dağılım
     package_distribution = approved_investments.values('package__name').annotate(total=Sum('amount'))
 
-    # Getiri (kazanç) grafiği için veriler
     monthly_returns = {}
     for inv in approved_investments:
         key = inv.approved_at.strftime('%Y-%m') if inv.approved_at else inv.created_at.strftime('%Y-%m')
@@ -251,3 +225,9 @@ def profile(request):
             'data': [float(item['total']) for item in package_distribution],
         },
     })
+
+def privacy_policy(request):
+    return render(request, 'core/privacy_policy.html')
+
+def terms(request):
+    return render(request, 'core/terms.html')

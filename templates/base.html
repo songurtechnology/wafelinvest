@@ -7,33 +7,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>{% block title %}WafelInvest{% endblock %}</title>
+  <title>{% block title %}WafelInvest{% endblock %}</title>
+  
+  <!-- Canonical URL (SEO için çok önemli) -->
+  <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri|slice:":-1" }}{% endblock %}" />
+
+  <!-- SEO Meta Tags -->
   <meta name="description" content="{% block meta_description %}WafelInvest - Akıllı ve Güvenilir Stroopwafel Yatırım Platformu{% endblock %}" />
   <meta name="author" content="WafelInvest Team" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="{{ request.build_absolute_uri }}" />
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="{% block og_title %}WafelInvest{% endblock %}" />
-  <meta property="og:description" content="{% block og_description %}Akıllı ve Güvenilir Stroopwafel Yatırımı{% endblock %}" />
-  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:type" content="website" />
+  <meta name="keywords" content="Stroopwafel, Yatırım, WafelInvest, Güvenilir, Akıllı Yatırım, Paketler" />
+  <meta http-equiv="Content-Language" content="tr" />
 
-  <!-- Twitter -->
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="{% block og_title %}WafelInvest{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}Akıllı ve Güvenilir Stroopwafel Yatırım Platformu{% endblock %}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri|slice:":-1" }}{% endblock %}" />
+  <meta property="og:image" content="{% static 'images/og-image.png' %}" />
+  <meta property="og:locale" content="tr_TR" />
+
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{% block twitter_title %}WafelInvest{% endblock %}" />
-  <meta name="twitter:description" content="{% block twitter_description %}Stroopwafel ile yatırım yapın, kazanç sağlayın!{% endblock %}" />
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "WafelInvest",
-    "url": "https://www.wafelinvest.com",
-    "logo": "https://www.wafelinvest.com/static/images/favicon.png"
-  }
-  </script>
+  <meta name="twitter:description" content="{% block twitter_description %}Akıllı ve Güvenilir Stroopwafel Yatırım Platformu{% endblock %}" />
+  <meta name="twitter:image" content="{% static 'images/og-image.png' %}" />
 
   <!-- Favicon -->
   <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon" />
@@ -74,11 +72,10 @@
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
     .navbar-brand img {
-    display: inline-block;
-    vertical-align: middle;
-    border-radius: 4px;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 4px;
     }
-
     .navbar-brand {
       font-size: 1.75rem;
       font-weight: 700;
@@ -187,18 +184,18 @@
 </head>
 <body class="d-flex flex-column min-vh-100 transition-fade" data-barba="wrapper">
 
-<nav class="navbar navbar-expand-lg navbar-light sticky-top" data-aos="fade-down">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Ana navigasyon" data-aos="fade-down">
   <div class="container-fluid px-lg-5 px-3 d-flex justify-content-between align-items-center">
     
     <!-- Sol kısım: Logo -->
-    <a class="navbar-brand d-flex align-items-center gap-2 me-auto" href="{% url 'home' %}">
+    <a class="navbar-brand d-flex align-items-center gap-2 me-auto" href="{% url 'home' %}" aria-label="WafelInvest Anasayfa">
       <img src="{% static 'images/favicon.png' %}" alt="WafelInvest Logo" width="32" height="32" />
       <span>WafelInvest</span>
     </a>
 
     <!-- Hamburger Menü (Mobil) -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Navigasyonu aç/kapat">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -212,13 +209,13 @@
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            <i class="bi bi-person-circle fs-5"></i> {{ user.first_name|default:user.username }}
+             aria-expanded="false" aria-haspopup="true">
+            <i class="bi bi-person-circle fs-5" aria-hidden="true"></i> <span class="visually-hidden">Kullanıcı menüsü</span> {{ user.first_name|default:user.username }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-person me-2"></i>Profilim</a></li>
+            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-person me-2" aria-hidden="true"></i>Profilim</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Çıkış</a></li>
+            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Çıkış</a></li>
           </ul>
         </li>
         {% else %}
@@ -234,17 +231,15 @@
   </div>
 </nav>
 
-
-
   <!-- Main Content -->
-  <main class="flex-grow-1 py-4" data-barba="container" data-barba-namespace="main">
+  <main class="flex-grow-1 py-4" data-barba="container" data-barba-namespace="main" role="main">
     <div class="container" data-aos="fade-up" data-aos-duration="700" data-aos-easing="ease-in-out">
       {% block content %}{% endblock %}
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="text-center py-3 mt-auto">
+  <footer class="text-center py-3 mt-auto" role="contentinfo">
     © 2025 WafelInvest | Akıllı Yatırım Platformu
   </footer>
 

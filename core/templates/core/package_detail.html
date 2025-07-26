@@ -1,28 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ package.name }} Paketi Detayları | WafelInvest{% endblock %}
+{% block title %}{{ package.name }} - Paket Detayları | WafelInvest{% endblock %}
 
-{% block meta_description %}
-{{ package.name }} yatırım paketi hakkında detaylı bilgileri keşfedin. Fiyat: {{ package.price }}€, Getiri: {{ package.return_percentage }}%. Şimdi kazanmaya başlayın!
-{% endblock %}
-
-{% block og_title %}{{ package.name }} Paketi | WafelInvest{% endblock %}
-{% block og_description %}
-{{ package.name }} paketi ile sabit ve güvenli bir yatırım yapın. Yatırım miktarı: {{ package.price }}€, getiri oranı: {{ package.return_percentage }}%. Detaylar burada.
-{% endblock %}
-
-{% block twitter_title %}{{ package.name }} Paketi | WafelInvest{% endblock %}
-{% block twitter_description %}
-{{ package.name }} paketine yatırım yapın, sabit getiri kazanın. Fiyat: {{ package.price }}€, Getiri: {{ package.return_percentage }}%. Hemen inceleyin!
+{% block meta %}
+  <meta name="description" content="{{ package.short_description|default:'Yatırımcılara özel avantajlar sunan sabit kazançlı yatırım paketi.' }}">
+  <meta name="keywords" content="yatırım, {{ package.name }}, sabit getiri, finans, wafelinvest, paket detayları">
+  <meta name="robots" content="index, follow">
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<main class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-9">
+    <article class="col-lg-10 col-xl-9">
 
       <!-- Başlık -->
-      <div class="text-center mb-5">
+      <header class="text-center mb-5">
         <h1 class="fw-bold text-uppercase"
             style="color:
               {% if 'Basic' in package.name %}#198754
@@ -30,7 +22,8 @@
               {% elif 'Master' in package.name %}#fd7e14
               {% else %}#6c757d
               {% endif %};
-              font-family: 'Poppins', sans-serif;">
+              font-family: 'Poppins', sans-serif;"
+              >
           {{ package.name }}
         </h1>
         <div class="mx-auto mt-2" style="width: 80px; height: 5px; border-radius: 2px;
@@ -41,14 +34,14 @@
             {% else %}#6c757d
             {% endif %};">
         </div>
-      </div>
+      </header>
 
       <!-- Paket Kartı -->
-      <div class="card shadow-lg rounded-4 border-0">
+      <section class="card shadow-lg rounded-4 border-0">
         <div class="row g-0">
           
           <!-- Sol: Genel Bilgiler -->
-          <div class="col-md-5 p-4 border-end d-flex flex-column justify-content-center bg-light-subtle rounded-start-4">
+          <aside class="col-md-5 p-4 border-end d-flex flex-column justify-content-center bg-light-subtle rounded-start-4" aria-label="Paket genel bilgileri">
             <div class="text-center">
               <div class="mb-3">
                 <small class="text-muted">Yatırım Tutarı</small>
@@ -61,7 +54,7 @@
 
             <ul class="list-group list-group-flush mt-4">
               <li class="list-group-item">
-                <i class="bi bi-clock me-2 text-primary"></i>
+                <i class="bi bi-clock me-2 text-primary" aria-hidden="true"></i>
                 <strong>Süre:</strong>
                 {% if 'Basic' in package.name %} 4 Gün
                 {% elif 'Premium' in package.name %} 7 Gün
@@ -70,7 +63,7 @@
                 {% endif %}
               </li>
               <li class="list-group-item">
-                <i class="bi bi-bar-chart-fill me-2 text-warning"></i>
+                <i class="bi bi-bar-chart-fill me-2 text-warning" aria-hidden="true"></i>
                 <strong>Getiri:</strong>
                 {% if return_rate > 0 %}
                   %{{ return_rate|floatformat:0 }} (Toplam: €{{ expected_return|floatformat:2 }})
@@ -79,39 +72,39 @@
                 {% endif %}
               </li>
               <li class="list-group-item">
-                <i class="bi bi-arrow-counterclockwise me-2 text-danger"></i>
+                <i class="bi bi-arrow-counterclockwise me-2 text-danger" aria-hidden="true"></i>
                 <strong>İptal:</strong> 30 Gün İçinde %30 İade
               </li>
             </ul>
-          </div>
+          </aside>
 
           <!-- Sağ: Açıklama & Yatırım -->
-          <div class="col-md-7 p-5">
-            <h4 class="fw-semibold text-primary mb-3">Paket Açıklaması</h4>
+          <section class="col-md-7 p-5">
+            <h2 class="fw-semibold text-primary mb-3">Paket Açıklaması</h2>
             <p class="text-muted lh-lg" style="white-space: pre-line;">
               {{ package.description|default:"Bu yatırım paketi, sabit getirili yatırımlarınızı güvenli bir şekilde değerlendirmeniz için tasarlanmıştır. Süresi boyunca hiçbir ekstra işlem yapmanıza gerek kalmadan vade sonunda kazancınız hesabınıza yansıtılır. Risk yönetimi ve şeffaf ödeme politikası ile yatırımınızı kolayca takip edebilirsiniz." }}
             </p>
 
-            <form method="post" action="{% url 'invest' package.id %}" class="mt-4">
+            <form method="post" action="{% url 'invest' package.id %}" class="mt-4" aria-label="{{ package.name }} yatırım formu">
               {% csrf_token %}
-              <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover">
+              <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover" aria-label="Bu pakete yatırım yap">
                 🚀 Bu Pakete Yatırım Yap
               </button>
             </form>
-          </div>
+          </section>
         </div>
-      </div>
+      </section>
 
       <!-- Geri Dön -->
-      <div class="text-center mt-4">
-        <a href="{% url 'packages' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
-          <i class="bi bi-arrow-left-circle me-2"></i> Tüm Paketlere Geri Dön
+      <nav class="text-center mt-4" aria-label="Paketler sayfasına geri dönüş">
+        <a href="{% url 'packages' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2" aria-label="Tüm paketlere geri dön">
+          <i class="bi bi-arrow-left-circle me-2" aria-hidden="true"></i> Tüm Paketlere Geri Dön
         </a>
-      </div>
+      </nav>
 
-    </div>
+    </article>
   </div>
-</div>
+</main>
 
 <style>
   .btn-hover {

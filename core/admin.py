@@ -37,6 +37,7 @@ class SiteSettingAdmin(admin.ModelAdmin):
     list_display = ('whatsapp_support_link',)
 
     def has_add_permission(self, request):
+        # Sadece bir tane SiteSetting olmasına izin ver
         return SiteSetting.objects.count() < 1
 
 
@@ -91,7 +92,7 @@ class InvestmentAdmin(admin.ModelAdmin):
 
         super().save_model(request, obj, form, change)
 
-        if hasattr(obj.profile, 'user') and hasattr(obj.profile, 'investment_summary'):
+        if hasattr(obj.profile, 'investment_summary'):
             update_user_investment_summary(obj.profile)
 
 
@@ -124,7 +125,7 @@ class PaymentConfirmationAdmin(admin.ModelAdmin):
 
     def payment_screenshot_preview(self, obj):
         if obj.payment_screenshot:
-            return format_html('<img src="{}" width="150" />', obj.payment_screenshot.url)
+            return format_html('<img src="{}" width="150" style="object-fit: contain;"/>', obj.payment_screenshot.url)
         return "-"
     payment_screenshot_preview.short_description = "Ödeme Görseli"
 
@@ -147,9 +148,9 @@ class UserInvestmentSummaryAdmin(admin.ModelAdmin):
     get_username.short_description = 'Kullanıcı'
 
 
-# Yardımcı fonksiyon: Özet güncelleme
+# Yardımcı fonksiyon: Kullanıcının yatırım özetini güncelle
 def update_user_investment_summary(profile):
-    summary, _ = UserInvestmentSummary.objects.get_or_create(profile=profile)
+    summary, created = UserInvestmentSummary.objects.get_or_create(profile=profile)
     investments = profile.investments.filter(status=Investment.STATUS_APPROVED)
 
     summary.total_invested = sum(inv.amount for inv in investments)

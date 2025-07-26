@@ -17,23 +17,28 @@ class Profile(models.Model):
     address = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.username} ({self.get_role_display()})"
+        if self.user:
+            return f"{self.user.username} ({self.get_role_display()})"
+        return "Profil"
 
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
-        # Yeni kullanıcı oluşturulduğunda profil ve role default 'user' olarak atanır
         Profile.objects.create(user=instance, role='user')
     else:
-        # Güncelleme durumunda profile varsa güncelle, yoksa oluştur
         if hasattr(instance, 'profile'):
             instance.profile.save()
         else:
             Profile.objects.create(user=instance, role='user')
 
 
-# Site ayarları
+@receiver(post_save, sender=Profile)
+def create_user_investment_summary(sender, instance, created, **kwargs):
+    if created:
+        UserInvestmentSummary.objects.create(profile=instance)
+
+
 class SiteSetting(models.Model):
     whatsapp_support_link = models.URLField(verbose_name="WhatsApp Destek Bağlantısı", max_length=300)
 
@@ -45,7 +50,6 @@ class SiteSetting(models.Model):
         verbose_name_plural = "Site Ayarları"
 
 
-# Kripto cüzdanları
 class CryptoWallet(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
@@ -55,21 +59,22 @@ class CryptoWallet(models.Model):
     def __str__(self):
         return f"{self.name} - {self.network}"
 
+    class Meta:
+        ordering = ['-id']
 
-# Yatırım paketleri
+
 class Package(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration_days = models.PositiveIntegerField(verbose_name="Süre (gün)")
     profit_percent = models.PositiveIntegerField(default=100, verbose_name="Getiri Oranı (%)")
+    return_percentage = models.IntegerField()
+    description = models.TextField()
 
     def __str__(self):
         return self.name
-    
 
 
-
-# Yatırımlar
 class Investment(models.Model):
     STATUS_PENDING = 'pending'
     STATUS_APPROVED = 'approved'
@@ -100,7 +105,10 @@ class Investment(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.expected_return and self.amount and self.package:
-            self.expected_return = self.amount * (Decimal(1) + Decimal(self.package.profit_percent) / Decimal(100))
+            try:
+                self.expected_return = self.amount * (Decimal(1) + Decimal(self.package.profit_percent) / Decimal(100))
+            except (TypeError, ZeroDivisionError):
+                self.expected_return = self.amount
 
         now = timezone.now()
         if self.status == self.STATUS_APPROVED and not self.approved_at:
@@ -126,7 +134,6 @@ class Investment(models.Model):
         return f"{self.profile.user.username} - {self.package.name} | {self.amount}₺ | {self.status} | {self.created_at.strftime('%d/%m/%Y')}"
 
 
-# Yatırım Özeti
 class UserInvestmentSummary(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='investment_summary')
     total_invested = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
@@ -142,7 +149,6 @@ class UserInvestmentSummary(models.Model):
         verbose_name_plural = "Yatırım Özetleri"
 
 
-# Ödeme Onayı
 class PaymentConfirmation(models.Model):
     investment = models.OneToOneField(Investment, on_delete=models.CASCADE, related_name='payment_confirmation')
     whatsapp_number = models.CharField(max_length=20)
