@@ -5,9 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-vgz7(815#_eb#&0xh2b=j^r+yb)pl)^!qcmjga8jp@rvyq(@^x'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['wafelinvest.nl', 'www.wafelinvest.nl']
+ALLOWED_HOSTS = ['wafelinvest.nl', 'www.wafelinvest.nl' 'localhost', '127.0.0.1']
 
 
 INSTALLED_APPS = [
