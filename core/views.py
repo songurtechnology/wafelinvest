@@ -178,7 +178,7 @@ def profile(request):
     countdowns = []
     for inv in approved_investments:
         if inv.approved_at:
-            countdown_end = inv.approved_at + timedelta(days=30)
+            countdown_end = inv.approved_at + timedelta(days=inv.package.duration_days)
             countdowns.append({
                 'id': inv.id,
                 'package': inv.package.name,
