@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Profilim{% endblock %}
+{% block extra_head %}
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <script>
+    // Cache-buster parametresi (örneğin grafikler için kullanılabilir)
+    const timestamp = new Date().getTime();
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -222,3 +229,12 @@
   });
 </script>
 {% endblock %}
+
+<script>
+  // Sayfa geri getirildiğinde (back/forward tuşuyla) sayfayı tazele
+  window.onpageshow = function(event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  };
+</script>
