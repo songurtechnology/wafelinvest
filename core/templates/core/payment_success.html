@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Ödeme Alındı | WafelInvest{% endblock %}
+{% block title %}Ödeme Başarılı | WafelInvest{% endblock %}
+
+{% block meta_description %}
+Ödemeniz başarıyla alındı! Paketinizin onayı sonrası sabit getirili yatırımınız aktif hale gelecektir.
+{% endblock %}
+
+{% block og_title %}Ödeme Onaylandı | WafelInvest{% endblock %}
+{% block og_description %}
+Yatırım süreciniz başarıyla başladı. Artık WafelInvest paketiniz işleme alındı ve kazancınız için geri sayım başladı!
+{% endblock %}
+
+{% block twitter_title %}Ödeme Başarılı | WafelInvest{% endblock %}
+{% block twitter_description %}
+Tebrikler! Ödemeniz başarıyla gerçekleşti. Stroopwafel yatırımınız için sistemimiz sizi işleme aldı.
+{% endblock %}
 
 {% block content %}
 <div class="container py-5">

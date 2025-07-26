@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
-{% block title %}{{ package.name }} - Paket Detayları | WafelInvest{% endblock %}
+
+{% block title %}{{ package.name }} Paketi Detayları | WafelInvest{% endblock %}
+
+{% block meta_description %}
+{{ package.name }} yatırım paketi hakkında detaylı bilgileri keşfedin. Fiyat: {{ package.price }}€, Getiri: {{ package.return_percentage }}%. Şimdi kazanmaya başlayın!
+{% endblock %}
+
+{% block og_title %}{{ package.name }} Paketi | WafelInvest{% endblock %}
+{% block og_description %}
+{{ package.name }} paketi ile sabit ve güvenli bir yatırım yapın. Yatırım miktarı: {{ package.price }}€, getiri oranı: {{ package.return_percentage }}%. Detaylar burada.
+{% endblock %}
+
+{% block twitter_title %}{{ package.name }} Paketi | WafelInvest{% endblock %}
+{% block twitter_description %}
+{{ package.name }} paketine yatırım yapın, sabit getiri kazanın. Fiyat: {{ package.price }}€, Getiri: {{ package.return_percentage }}%. Hemen inceleyin!
+{% endblock %}
 
 {% block content %}
 <div class="container py-5">
