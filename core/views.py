@@ -49,15 +49,17 @@ def packages(request):
     packages = Package.objects.all()
     return render(request, 'core/packages.html', {'packages': packages})
 
-def package_detail(request, package_id):
-    package = get_object_or_404(Package, pk=package_id)
-    expected_return = calculate_expected_return(package, package.price)
+def package_details(request, pk):
+    package = get_object_or_404(Package, pk=pk)
+    return_rate = package.profit_percent or 0
+    expected_return = package.price * return_rate / 100 if return_rate else 0
     context = {
         'package': package,
-        'return_rate': package.profit_percent,
+        'return_rate': return_rate,
         'expected_return': expected_return,
     }
-    return render(request, 'core/package_detail.html', context)
+    return render(request, 'package_details.html', context)
+
 
 def register(request):
     if request.method == 'POST':
