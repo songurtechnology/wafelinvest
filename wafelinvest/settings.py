@@ -55,9 +55,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'wafelinvest.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')  # Render otomatik bu değişkeni set eder
-    )
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
 }
 
 AUTH_PASSWORD_VALIDATORS = [
