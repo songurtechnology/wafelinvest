@@ -57,48 +57,20 @@ yatırım paketleri, sabit getiri, stroopwafel yatırımı, güvenli yatırım, 
             €{{ package.price|floatformat:2 }}
           </h3>
           <ul class="list-unstyled small text-muted mb-4">
-            <li><i class="bi bi-clock me-2" aria-hidden="true"></i> Süre: 
-              <strong>
-                {% if package.price == 30 or package.price == 50 %}
-                  4 Gün
-                {% elif package.price == 100 or package.price == 150 %}
-                  7 Gün
-                {% elif package.price == 250 or package.price == 1000 %}
-                  12 Gün
-                {% else %}
-                  Bilgi Yok
-                {% endif %}
-              </strong>
+          <li><i class="bi bi-clock me-2" aria-hidden="true"></i> Süre: 
+            <strong>{{ package.duration|default:"Bilgi Yok" }} Gün</strong>
             </li>
             <li><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i> Getiri:
-              <strong>
-                {% if package.price == 30 or package.price == 50 %}
-                  %50
-                {% elif package.price == 100 or package.price == 150 %}
-                  %75
-                {% elif package.price == 250 or package.price == 1000 %}
-                  %100
-                {% else %}
-                  Bilgi Yok
-                {% endif %}
-              </strong>
+              <strong>%{{ package.profit_percent|default:"Bilgi Yok" }}</strong>
             </li>
             <li><i class="bi bi-shield-check me-2" aria-hidden="true"></i> İptal: <strong>30 Gün İçinde %30 İade</strong></li>
           </ul>
 
           <div class="collapse mb-3" id="desc-{{ package.id }}" aria-live="polite" aria-atomic="true" aria-expanded="false">
-            <p class="text-muted small" style="white-space: pre-line;">
-              {% if package.price == 30 or package.price == 50 %}
-                Bu paket küçük yatırımcılar için idealdir. 4 gün içerisinde %50 getiri sağlar.
-              {% elif package.price == 100 or package.price == 150 %}
-                Orta seviyeli yatırımcılar için uygundur. 7 gün içinde %75 kazanç sunar.
-              {% elif package.price == 250 or package.price == 1000 %}
-                Profesyonel yatırımcılar için özel hazırlanmıştır. 12 gün içinde %100 net kazanç sağlar.
-              {% else %}
-                Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz.
-              {% endif %}
-            </p>
-          </div>
+          <p class="text-muted small" style="white-space: pre-line;">
+            {{ package.description|default:"Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz." }}
+          </p>
+        </div>
 
           <div class="d-grid gap-2">
             <a href="{% url 'package_detail' package.id %}" 
