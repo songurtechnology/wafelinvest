@@ -11,8 +11,8 @@ urlpatterns = [
 
     # Yatırım paketleri
     path('packages/', views.packages, name='packages'),
-    path('packages/<int:package_id>/', views.package_detail, name='package_detail'),
-    path('invest/<int:package_id>/', views.invest, name='invest'),
+    path('packages/<str:category>/', views.packages_by_category, name='packages_by_category'),
+    path('invest/<int:pk>/', views.package_detail, name='package_detail'),
 
     # Ödeme işlemleri
     path('payment/submit/<int:investment_id>/', views.submit_payment, name='submit_payment'),

@@ -28,88 +28,90 @@ yatırım paketleri, sabit getiri, stroopwafel yatırımı, güvenli yatırım, 
     </div>
   {% endif %}
 
-  <div class="row g-4" aria-label="Yatırım paketleri listesi">
-    {% for package in packages %}
-    <div class="col-12 col-md-6 col-lg-4">
-      <section class="card h-100 shadow-lg rounded-4 border-0 hover-card" tabindex="0" aria-labelledby="package-{{ package.id }}-name" role="region">
-        <header class="card-header border-0 bg-transparent text-center pt-4 pb-2">
-          <h2 id="package-{{ package.id }}-name" class="text-uppercase fw-bold" style="color:
-              {% if 'Basic' in package.name %}#20c997
-              {% elif 'Premium' in package.name %}#0d6efd
-              {% elif 'Master' in package.name %}#fd7e14
-              {% else %}#6c757d
-              {% endif %};
-              letter-spacing: 1.5px;">
-            {{ package.name }}
-          </h2>
-          <span class="badge rounded-pill fs-6 px-3 py-2 mt-2 text-bg-light">
-            <i class="bi 
-              {% if 'Basic' in package.name %}bi-currency-euro
-              {% elif 'Premium' in package.name %}bi-star-fill
-              {% elif 'Master' in package.name %}bi-award-fill
-              {% else %}bi-archive
-              {% endif %} me-1" aria-hidden="true"></i> Paket Detayları
-          </span>
-        </header>
+  <h2 class="mb-4 text-center">{{ category }} Paketleri</h2>
 
-        <div class="card-body px-4 py-3">
-          <h3 class="fw-bold text-center mb-4" style="font-family: 'Montserrat', sans-serif;">
-            €{{ package.price|default_if_none:"-"|floatformat:2 }}
-          </h3>
-          <ul class="list-unstyled small text-muted mb-4">
+<div class="row g-4" aria-label="{{ category }} yatırım paketleri listesi">
+  {% for package in packages %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <section class="card h-100 shadow-lg rounded-4 border-0 hover-card" tabindex="0" aria-labelledby="package-{{ package.id }}-name" role="region">
+      <header class="card-header border-0 bg-transparent text-center pt-4 pb-2">
+        <h2 id="package-{{ package.id }}-name" class="text-uppercase fw-bold" style="color:
+            {% if 'Basic' in package.name %}#20c997
+            {% elif 'Premium' in package.name %}#0d6efd
+            {% elif 'Master' in package.name %}#fd7e14
+            {% else %}#6c757d
+            {% endif %};
+            letter-spacing: 1.5px;">
+          {{ package.name }}
+        </h2>
+        <span class="badge rounded-pill fs-6 px-3 py-2 mt-2 text-bg-light">
+          <i class="bi 
+            {% if 'Basic' in package.name %}bi-currency-euro
+            {% elif 'Premium' in package.name %}bi-star-fill
+            {% elif 'Master' in package.name %}bi-award-fill
+            {% else %}bi-archive
+            {% endif %} me-1" aria-hidden="true"></i> Paket Detayları
+        </span>
+      </header>
+
+      <div class="card-body px-4 py-3">
+        <h3 class="fw-bold text-center mb-4" style="font-family: 'Montserrat', sans-serif;">
+          €{{ package.price|default_if_none:"-"|floatformat:2 }}
+        </h3>
+        <ul class="list-unstyled small text-muted mb-4">
           <li><i class="bi bi-clock me-2" aria-hidden="true"></i> Süre: 
             <strong>{{ package.duration|default_if_none:"Bilgi Yok" }} Gün</strong>
-            </li>
-            <li><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i> Getiri:
-              <strong>%{{ package.profit_percent|default_if_none:"Bilgi Yok" }}</strong>
-            </li>
-            <li><i class="bi bi-shield-check me-2" aria-hidden="true"></i> İptal: <strong>30 Gün İçinde %30 İade</strong></li>
-          </ul>
+          </li>
+          <li><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i> Getiri:
+            <strong>%{{ package.profit_percent|default_if_none:"Bilgi Yok" }}</strong>
+          </li>
+          <li><i class="bi bi-shield-check me-2" aria-hidden="true"></i> İptal: <strong>30 Gün İçinde %30 İade</strong></li>
+        </ul>
 
-          <div class="collapse mb-3" id="desc-{{ package.id }}" aria-live="polite" aria-atomic="true" aria-expanded="false">
+        <div class="collapse mb-3" id="desc-{{ package.id }}" aria-live="polite" aria-atomic="true" aria-expanded="false">
           <p class="text-muted small" style="white-space: pre-line;">
             {{ package.description|default_if_none:"Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz." }}
           </p>
         </div>
 
-          <div class="d-grid gap-2">
-            <a href="{% url 'package_detail' package.id %}" 
-               class="btn btn-outline-info fw-medium shadow-sm rounded-pill" 
-               role="button"
-               aria-label="{{ package.name }} paketinin detaylarını göster">
-              📘 Detaylı Bilgi
-            </a>
-            <button class="btn btn-outline-secondary rounded-pill" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#desc-{{ package.id }}" 
-                    aria-expanded="false" 
-                    aria-controls="desc-{{ package.id }}"
-                    aria-label="{{ package.name }} paketinin özet bilgisini göster veya gizle">
-              Özet Bilgiyi Göster / Gizle
-            </button>
-          </div>
+        <div class="d-grid gap-2">
+          <a href="{% url 'package_detail' package.id %}" 
+             class="btn btn-outline-info fw-medium shadow-sm rounded-pill" 
+             role="button"
+             aria-label="{{ package.name }} paketinin detaylarını göster">
+            📘 Detaylı Bilgi
+          </a>
+          <button class="btn btn-outline-secondary rounded-pill" 
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#desc-{{ package.id }}" 
+                  aria-expanded="false" 
+                  aria-controls="desc-{{ package.id }}"
+                  aria-label="{{ package.name }} paketinin özet bilgisini göster veya gizle">
+            Özet Bilgiyi Göster / Gizle
+          </button>
         </div>
+      </div>
 
-        <footer class="card-footer bg-white border-0 px-4 pb-4 pt-3">
-          <form method="post" action="{% url 'invest' package.id %}">
-            {% csrf_token %}
-            <button type="submit" 
-                    class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover"
-                    aria-label="{{ package.name }} paketine yatırım yap">
-              🚀 Yatırıma Başla
-            </button>
-          </form>
-        </footer>
-      </section>
-    </div>
-    {% empty %}
-    <div class="col-12 text-center">
-      <p class="text-muted fs-5 fst-italic">Şu an için tanımlı bir yatırım paketi bulunmamaktadır.</p>
-    </div>
-    {% endfor %}
+      <footer class="card-footer bg-white border-0 px-4 pb-4 pt-3">
+        <form method="post" action="{% url 'invest' package.id %}">
+          {% csrf_token %}
+          <button type="submit" 
+                  class="btn btn-primary w-100 py-3 fw-semibold rounded-pill shadow-sm btn-hover"
+                  aria-label="{{ package.name }} paketine yatırım yap">
+            🚀 Yatırıma Başla
+          </button>
+        </form>
+      </footer>
+    </section>
   </div>
+  {% empty %}
+  <div class="col-12 text-center">
+    <p class="text-muted fs-5 fst-italic">Şu an için tanımlı bir yatırım paketi bulunmamaktadır.</p>
+  </div>
+  {% endfor %}
 </div>
+
 
 <!-- Sayfaya özel stil -->
 <style>

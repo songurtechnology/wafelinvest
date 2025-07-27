@@ -316,22 +316,25 @@ stroopwafel yatırımı, sabit getiri, yatırım platformu, hollanda stroopwafel
 <!-- YATIRIM PAKETLERİ -->
 <section class="packages-section" aria-labelledby="packages-title">
   <h2 id="packages-title">Yatırım Paketlerimiz</h2>
-  <div class="packages-grid">
-    <div class="package-card" tabindex="0" role="group" aria-label="Basic Paket: 100 Euro yatırım, 130 Euro geri ödeme">
-      <h3 class="package-title text-primary">Basic Paket</h3>
-      <p class="package-desc">100€ yatırım → 130€ geri ödeme</p>
-      <a href="{% url 'packages' %}" class="package-cta" aria-label="Basic paket detaylarını gör">Detayları Gör</a>
-    </div>
-    <div class="package-card" tabindex="0" role="group" aria-label="Premium Paket: 250 Euro yatırım, 375 Euro geri ödeme" style="border-color: #ffb400;">
-      <h3 class="package-title text-warning">Premium Paket</h3>
-      <p class="package-desc">250€ yatırım → 375€ geri ödeme</p>
-      <a href="{% url 'packages' %}" class="package-cta" aria-label="Premium paket detaylarını gör">Detayları Gör</a>
-    </div>
-    <div class="package-card" tabindex="0" role="group" aria-label="Master Paket: 500 Euro yatırım, 1000 Euro geri ödeme">
-      <h3 class="package-title text-success">Master Paket</h3>
-      <p class="package-desc">500€ yatırım → 1000€ geri ödeme</p>
-      <a href="{% url 'packages' %}" class="package-cta" aria-label="Master paket detaylarını gör">Detayları Gör</a>
-    </div>
+<div class="packages-grid">
+  <div class="package-card">
+    <h3 class="package-title text-primary">Basic Paket</h3>
+    <p class="package-desc">100€ – 249€ yatırım</p>
+    <a href="{% url 'packages_by_category' 'basic' %}" class="package-cta">Detayları Gör</a>
+  </div>
+
+  <div class="package-card">
+    <h3 class="package-title text-warning">Premium Paket</h3>
+    <p class="package-desc">250€ – 499€ yatırım</p>
+    <a href="{% url 'packages_by_category' 'premium' %}" class="package-cta">Detayları Gör</a>
+  </div>
+
+  <div class="package-card">
+    <h3 class="package-title text-success">Master Paket</h3>
+    <p class="package-desc">500€ – 2000€ yatırım</p>
+    <a href="{% url 'packages_by_category' 'master' %}" class="package-cta">Detayları Gör</a>
+  </div>
+</div>
   </div>
 </section>
 

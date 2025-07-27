@@ -43,32 +43,42 @@ def update_user_investment_summary(profile):
     summary.save()
 
 def home(request):
-    basic_packages = Package.objects.filter(price__lt=500)
-    premium_packages = Package.objects.filter(price__gte=500, price__lt=1000)
-    master_packages = Package.objects.filter(price__gte=1000)
-    context = {
-        'basic_packages': basic_packages,
-        'premium_packages': premium_packages,
-        'master_packages': master_packages,
-        'year': datetime.now().year,
-    }
-    return render(request, 'core/home.html', context)
+    packages = Package.objects.all()[:3]  # Sadece 3 tanesini al
+    return render(request, 'core/home.html', {'packages': packages, 'year': datetime.now().year})
 
 
 def packages(request):
     packages = Package.objects.all()
     return render(request, 'core/packages.html', {'packages': packages})
 
+def packages_by_category(request, category):
+    if category == "basic":
+        packages = Package.objects.filter(price__gte=100, price__lt=250)
+    elif category == "premium":
+        packages = Package.objects.filter(price__gte=250, price__lt=500)
+    elif category == "master":
+        packages = Package.objects.filter(price__gte=500, price__lte=2000)
+    else:
+        packages = Package.objects.none()
+
+    return render(request, 'core/packages.html', {
+        'packages': packages,
+        'category': category.capitalize(),
+    })
+
 def package_detail(request, pk):
     package = get_object_or_404(Package, pk=pk)
-    return_rate = package.profit_percent or 0
-    expected_return = package.price * return_rate / 100 if return_rate else 0
+
+    # Örnek: expected_return = fiyat * getiri yüzdesi / 100
+    expected_return = None
+    if package.price and package.profit_percent:
+        expected_return = package.price * (package.profit_percent / 100)
+
     context = {
         'package': package,
-        'return_rate': return_rate,
         'expected_return': expected_return,
     }
-    return render(request, 'package_detail.html', context)
+    return render(request, 'core/package_detail.html', context)
 
 
 def register(request):

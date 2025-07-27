@@ -22,8 +22,7 @@
               {% elif 'Master' in package.name %}#fd7e14
               {% else %}#6c757d
               {% endif %};
-              font-family: 'Poppins', sans-serif;"
-              >
+              font-family: 'Poppins', sans-serif;">
           {{ package.name }}
         </h1>
         <div class="mx-auto mt-2" style="width: 80px; height: 5px; border-radius: 2px;
@@ -39,7 +38,7 @@
       <!-- Paket Kartı -->
       <section class="card shadow-lg rounded-4 border-0">
         <div class="row g-0">
-          
+
           <!-- Sol: Genel Bilgiler -->
           <aside class="col-md-5 p-4 border-end d-flex flex-column justify-content-center bg-light-subtle rounded-start-4" aria-label="Paket genel bilgileri">
             <div class="text-center">
@@ -53,27 +52,35 @@
             </div>
 
             <ul class="list-group list-group-flush mt-4">
-              <li class="list-group-item">
+              <li class="list-group-item d-flex align-items-center">
                 <i class="bi bi-clock me-2 text-primary" aria-hidden="true"></i>
                 <strong>Süre:</strong>
-                {% if 'Basic' in package.name %} 4 Gün
-                {% elif 'Premium' in package.name %} 7 Gün
-                {% elif 'Master' in package.name %} 12 Gün
-                {% else %} 30 Gün
-                {% endif %}
+                <span class="ms-1">
+                  {% if package.duration %}
+                    {{ package.duration }} Gün
+                  {% else %}
+                    Bilgi Yok
+                  {% endif %}
+                </span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item d-flex align-items-center">
                 <i class="bi bi-bar-chart-fill me-2 text-warning" aria-hidden="true"></i>
                 <strong>Getiri:</strong>
-                {% if return_rate > 0 %}
-                  %{{ return_rate|floatformat:0 }} (Toplam: €{{ expected_return|floatformat:2 }})
-                {% else %}
-                  Belirtilmemiş
-                {% endif %}
+                <span class="ms-1">
+                  {% if package.profit_percent %}
+                    %{{ package.profit_percent|floatformat:0 }}
+                  {% else %}
+                    Belirtilmemiş
+                  {% endif %}
+                  {% if expected_return %}
+                    (Toplam: €{{ expected_return|floatformat:2 }})
+                  {% endif %}
+                </span>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item d-flex align-items-center">
                 <i class="bi bi-arrow-counterclockwise me-2 text-danger" aria-hidden="true"></i>
-                <strong>İptal:</strong> 30 Gün İçinde %30 İade
+                <strong>İptal:</strong>
+                <span class="ms-1">30 Gün İçinde %30 İade</span>
               </li>
             </ul>
           </aside>
@@ -92,6 +99,7 @@
               </button>
             </form>
           </section>
+
         </div>
       </section>
 
