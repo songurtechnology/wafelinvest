@@ -98,6 +98,8 @@ def package_detail(request, pk):
     # price ve profit_percent hem None hem de 0 ihtimaline karşı kontrol edelim
     if package.price is not None and package.price > 0 and \
        package.profit_percent is not None and package.profit_percent > 0:
+        package.duration_days is not None and package.duration_days > 0
+
         try:
             expected_return = package.price * (package.profit_percent / 100)
         except Exception:
