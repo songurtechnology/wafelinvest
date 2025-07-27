@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,10 +55,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'wafelinvest.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Prod için Postgres öneririm
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')  # Render otomatik bu değişkeni set eder
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -89,8 +89,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Güvenlik ayarları (prod ortamda aktif olmalı)
-SESSION_COOKIE_SECURE = False  # Prod'da True yap
-CSRF_COOKIE_SECURE = False     # Prod'da True yap
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_SSL_REDIRECT = True
 
 # Login ve redirect ayarları
 LOGIN_URL = 'login'
