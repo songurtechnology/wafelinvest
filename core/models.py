@@ -62,13 +62,11 @@ class CryptoWallet(models.Model):
     class Meta:
         ordering = ['-id']
 
-
 class Package(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration_days = models.PositiveIntegerField(verbose_name="Süre (gün)")
     profit_percent = models.PositiveIntegerField(default=100, verbose_name="Getiri Oranı (%)")
-    return_percentage = models.IntegerField()
     description = models.TextField()
 
     def __str__(self):
