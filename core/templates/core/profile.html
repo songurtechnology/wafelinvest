@@ -129,11 +129,11 @@
     countdowns.forEach(cd => {
       const endDate = new Date(cd.end_date);
       const timerElement = document.getElementById(`timer-${cd.id}`);
+      const interval = setInterval(updateCountdown, 1000); // interval'ı önce tanımlıyoruz
 
       function updateCountdown() {
         const now = new Date();
         const diff = endDate - now;
-
         if (diff <= 0) {
           timerElement.innerHTML = "✔ Süre doldu";
           timerElement.classList.remove("text-danger");
@@ -141,17 +141,14 @@
           clearInterval(interval);
           return;
         }
-
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
         const minutes = Math.floor((diff / (1000 * 60)) % 60);
         const seconds = Math.floor((diff / 1000) % 60);
-
-        timerElement.innerHTML = `${days}g ${hours}s ${minutes}d ${seconds}sn`;
+        timerElement.innerHTML = `${days}g ${hours}saat ${minutes}dk ${seconds}sn`;
       }
 
       updateCountdown();
-      const interval = setInterval(updateCountdown, 1000);
     });
 
     // Aylık Yatırım Grafiği

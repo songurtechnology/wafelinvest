@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
@@ -183,7 +183,7 @@ def profile(request):
                 'id': inv.id,
                 'package': inv.package.name,
                 'amount': float(inv.amount),
-                'end_date': countdown_end.isoformat() + 'Z',
+                'end_date': countdown_end.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                 'approved_date': inv.approved_at.strftime("%d.%m.%Y"),
             })
 
