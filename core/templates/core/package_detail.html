@@ -13,7 +13,6 @@
   <div class="row justify-content-center">
     <article class="col-lg-10 col-xl-9">
 
-      <!-- Başlık -->
       <header class="text-center mb-5">
         <h1 class="fw-bold text-uppercase"
             style="color:
@@ -35,16 +34,16 @@
         </div>
       </header>
 
-      <!-- Paket Kartı -->
       <section class="card shadow-lg rounded-4 border-0">
         <div class="row g-0">
 
-          <!-- Sol: Genel Bilgiler -->
           <aside class="col-md-5 p-4 border-end d-flex flex-column justify-content-center bg-light-subtle rounded-start-4" aria-label="Paket genel bilgileri">
             <div class="text-center">
               <div class="mb-3">
                 <small class="text-muted">Yatırım Tutarı</small>
-                <h2 class="fw-bold display-6 text-success mt-1">€{{ package.price|floatformat:2 }}</h2>
+                <h2 class="fw-bold display-6 text-success mt-1">
+                  €{{ package.price|default:"0.00"|floatformat:2 }}
+                </h2>
               </div>
               <p class="text-muted fst-italic">
                 {{ package.short_description|default:"Yatırımcılara özel avantajlar sunan bu paket, sabit kazanç fırsatları ile öne çıkıyor." }}
@@ -85,7 +84,6 @@
             </ul>
           </aside>
 
-          <!-- Sağ: Açıklama & Yatırım -->
           <section class="col-md-7 p-5">
             <h2 class="fw-semibold text-primary mb-3">Paket Açıklaması</h2>
             <p class="text-muted lh-lg" style="white-space: pre-line;">
@@ -103,7 +101,6 @@
         </div>
       </section>
 
-      <!-- Geri Dön -->
       <nav class="text-center mt-4" aria-label="Paketler sayfasına geri dönüş">
         <a href="{% url 'packages' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2" aria-label="Tüm paketlere geri dön">
           <i class="bi bi-arrow-left-circle me-2" aria-hidden="true"></i> Tüm Paketlere Geri Dön

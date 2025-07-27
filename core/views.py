@@ -17,9 +17,34 @@ from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
 )
 
+RETURN_RATES = {
+    20: 0.30,
+    50: 0.35,
+    100: 0.40,
+    150: 0.45,
+    200: 0.50,
+    250: 0.55,
+    300: 0.60,
+    350: 0.65,
+    400: 0.70,
+    450: 0.75,
+    500: 0.80,
+    550: 0.85,
+    600: 0.90,
+    650: 0.95,
+    700: 1.00,
+    800: 1.10,
+    1000: 1.20,
+    1200: 1.35,
+    1500: 1.50,
+    2000: 1.50,
+}
+
+
 def calculate_expected_return(package, amount):
-    profit_percent = Decimal(package.profit_percent or 0)
-    return amount * (Decimal(1) + profit_percent / Decimal(100))
+    rate = RETURN_RATES.get(package.price, 0)
+    expected_return = amount + (amount * rate)
+    return expected_return
 
 def update_user_investment_summary(profile):
     approved_investments = Investment.objects.filter(profile=profile, status=Investment.STATUS_APPROVED)
@@ -69,10 +94,14 @@ def packages_by_category(request, category):
 def package_detail(request, pk):
     package = get_object_or_404(Package, pk=pk)
 
-    # Örnek: expected_return = fiyat * getiri yüzdesi / 100
     expected_return = None
-    if package.price and package.profit_percent:
-        expected_return = package.price * (package.profit_percent / 100)
+    # price ve profit_percent hem None hem de 0 ihtimaline karşı kontrol edelim
+    if package.price is not None and package.price > 0 and \
+       package.profit_percent is not None and package.profit_percent > 0:
+        try:
+            expected_return = package.price * (package.profit_percent / 100)
+        except Exception:
+            expected_return = None  # Herhangi bir hata durumunda None kalacak
 
     context = {
         'package': package,
@@ -253,3 +282,7 @@ def privacy_policy(request):
 
 def terms(request):
     return render(request, 'core/terms.html')
+
+
+
+
