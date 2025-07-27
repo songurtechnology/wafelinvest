@@ -58,7 +58,7 @@ def package_details(request, pk):
         'return_rate': return_rate,
         'expected_return': expected_return,
     }
-    return render(request, 'package_details.html', context)
+    return render(request, 'package_detail.html', context)
 
 
 def register(request):
