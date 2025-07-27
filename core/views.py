@@ -183,7 +183,7 @@ def profile(request):
                 'id': inv.id,
                 'package': inv.package.name,
                 'amount': float(inv.amount),
-                'end_date': countdown_end.strftime("%Y-%m-%dT%H:%M:%S"),
+                'end_date': countdown_end.isoformat() + 'Z',
                 'approved_date': inv.approved_at.strftime("%d.%m.%Y"),
             })
 
