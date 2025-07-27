@@ -54,21 +54,21 @@ yatırım paketleri, sabit getiri, stroopwafel yatırımı, güvenli yatırım, 
 
         <div class="card-body px-4 py-3">
           <h3 class="fw-bold text-center mb-4" style="font-family: 'Montserrat', sans-serif;">
-            €{{ package.price|floatformat:2 }}
+            €{{ package.price|default_if_none:"-"|floatformat:2 }}
           </h3>
           <ul class="list-unstyled small text-muted mb-4">
           <li><i class="bi bi-clock me-2" aria-hidden="true"></i> Süre: 
-            <strong>{{ package.duration|default:"Bilgi Yok" }} Gün</strong>
+            <strong>{{ package.duration|default_if_none:"Bilgi Yok" }} Gün</strong>
             </li>
             <li><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i> Getiri:
-              <strong>%{{ package.profit_percent|default:"Bilgi Yok" }}</strong>
+              <strong>%{{ package.profit_percent|default_if_none:"Bilgi Yok" }}</strong>
             </li>
             <li><i class="bi bi-shield-check me-2" aria-hidden="true"></i> İptal: <strong>30 Gün İçinde %30 İade</strong></li>
           </ul>
 
           <div class="collapse mb-3" id="desc-{{ package.id }}" aria-live="polite" aria-atomic="true" aria-expanded="false">
           <p class="text-muted small" style="white-space: pre-line;">
-            {{ package.description|default:"Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz." }}
+            {{ package.description|default_if_none:"Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz." }}
           </p>
         </div>
 
