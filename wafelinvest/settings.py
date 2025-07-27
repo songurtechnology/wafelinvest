@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,10 +55,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'wafelinvest.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Prod için Postgres öneririm
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://wafelinvestdb_t5d7_user:LbbGHIiBe5EiqBdyGVMrveuwYXtpL31p@dpg-d21e3k7fte5s73fggtgg-a.oregon-postgres.render.com/wafelinvestdb_t5d7',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
