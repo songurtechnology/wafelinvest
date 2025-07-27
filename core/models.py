@@ -67,7 +67,9 @@ class Package(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration_days = models.PositiveIntegerField(verbose_name="Süre (gün)")
     profit_percent = models.PositiveIntegerField(default=100, verbose_name="Getiri Oranı (%)")
+    short_description = models.CharField(max_length=255, blank=True, null=True, verbose_name="Kısa Açıklama")
     description = models.TextField()
+
 
     def __str__(self):
         return self.name

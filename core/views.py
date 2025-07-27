@@ -43,7 +43,17 @@ def update_user_investment_summary(profile):
     summary.save()
 
 def home(request):
-    return render(request, 'core/home.html', {'year': datetime.now().year})
+    basic_packages = Package.objects.filter(price__lt=500)
+    premium_packages = Package.objects.filter(price__gte=500, price__lt=1000)
+    master_packages = Package.objects.filter(price__gte=1000)
+    context = {
+        'basic_packages': basic_packages,
+        'premium_packages': premium_packages,
+        'master_packages': master_packages,
+        'year': datetime.now().year,
+    }
+    return render(request, 'core/home.html', context)
+
 
 def packages(request):
     packages = Package.objects.all()
