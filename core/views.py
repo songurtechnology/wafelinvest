@@ -43,10 +43,14 @@ RETURN_RATES = {
 
 def calculate_expected_return(package, amount):
     try:
-        if package is not None and package.profit_percent is not None and amount is not None:
-            return round(amount * (package.profit_percent / 100), 2)
-    except Exception:
-        pass
+        if (
+            package is not None
+            and package.profit_percent is not None
+            and amount is not None
+        ):
+            return round(float(amount) * (float(package.profit_percent) / 100), 2)
+    except Exception as e:
+        print("HATA:", e)
     return None
 
 
@@ -155,6 +159,9 @@ def invest(request, package_id):
     profile = request.user.profile
 
     expected_return = calculate_expected_return(package, package.price)
+    print("PRICE:", package.price)
+    print("PROFIT:", package.profit_percent)
+    print("EXPECTED RETURN:", expected_return)
 
     if request.method == 'POST':
         form = InvestmentForm(request.POST, profile=profile, package=package)
