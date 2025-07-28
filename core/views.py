@@ -42,10 +42,12 @@ RETURN_RATES = {
 
 
 def calculate_expected_return(package, amount):
-    if package is not None and package.profit_percent is not None and amount is not None:
-        return amount * (package.profit_percent / 100)
+    try:
+        if package and package.profit_percent and amount:
+            return round(amount * (package.profit_percent / 100), 2)
+    except Exception:
+        pass
     return None
-
 
 def update_user_investment_summary(profile):
     approved_investments = Investment.objects.filter(profile=profile, status=Investment.STATUS_APPROVED)
@@ -159,7 +161,6 @@ def invest(request, package_id):
             investment = form.save(commit=False)
             investment.profile = profile
             investment.package = package
-            investment.amount = package.price  # ✳️ Bu satır kritik
             investment.expected_return = calculate_expected_return(package, investment.amount)
             investment.status = Investment.STATUS_PENDING
             try:
@@ -169,7 +170,6 @@ def invest(request, package_id):
                 return redirect('submit_payment', investment_id=investment.id)
             except ValidationError as e:
                 form.add_error(None, e)
-
         else:
             messages.error(request, 'Formda hata var.')
     else:
