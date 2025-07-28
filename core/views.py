@@ -91,6 +91,15 @@ def chat_admin_view(request):
     return render(request, 'chat_admin.html', {'messages': messages})
 
 @login_required
+def profile_chat_view(request):
+    admin = User.objects.get(username='admin')
+    messages = ChatMessage.objects.filter(
+        sender__in=[request.user, admin],
+        receiver__in=[request.user, admin]
+    )
+    return render(request, 'core/profile.html', {'messages': messages})
+
+@login_required
 def send_message_view(request):
     if request.method == 'POST':
         receiver_id = request.POST.get('receiver_id')

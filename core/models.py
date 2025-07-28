@@ -26,10 +26,10 @@ class ChatMessage(models.Model):
     receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)  # ← Bunu ekle
 
-    def __str__(self):
-        return f"{self.sender.username} → {self.receiver.username}: {self.message[:30]}"
+    class Meta:
+        ordering = ['timestamp']
 
 
 @receiver(post_save, sender=User)
