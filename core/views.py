@@ -15,8 +15,7 @@ import json
 # Modeller ve formlar...
 from .models import (
     Package, Investment, PaymentConfirmation, CryptoWallet,
-    SiteSetting, UserInvestmentSummary, Profile,
-    ChatMessage, User
+    SiteSetting, UserInvestmentSummary, Profile, User
 )
 from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
@@ -156,9 +155,6 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'core/login.html', {'form': form})
 
-@login_required
-def profile_view(request):
-    return render(request, 'core/profile.html', {'user': request.user})
 
 @login_required
 def logout_view(request):

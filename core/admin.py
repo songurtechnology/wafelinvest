@@ -17,7 +17,7 @@ from .models import (
 # User admin kaydını kaldır
 admin.site.unregister(User)
 
-admin.site.register(ChatMessage)
+
 
 # User admin yeniden kaydediliyor
 @admin.register(User)

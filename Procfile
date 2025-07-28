@@ -1,1 +1,1 @@
-web: daphne wafelinvest.asgi:application
+web: gunicorn wafelinvest.wsgi

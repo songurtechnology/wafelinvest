@@ -274,47 +274,7 @@
 
   {% block extra_js %} {% endblock %}
 
-  <!-- base.html içinde genelde <body> tag'inin en sonuna ekleyin -->
-<div id="chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-  <button onclick="toggleChat()" class="btn btn-primary">💬 Chat</button>
-  <div id="chat-box" style="display: none; width: 320px; height: 420px; background: white; border: 1px solid #ccc; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
-    <div style="font-weight: bold; margin-bottom: 8px;">Sohbet Paneli</div>
-    <div id="chat-messages" style="height: 320px; overflow-y: auto; margin-bottom: 10px; font-size: 14px;"></div>
-    <input id="chat-input" type="text" class="form-control" placeholder="Mesaj yaz..." />
-    <button onclick="sendMessage()" class="btn btn-success btn-sm mt-2 w-100">Gönder</button>
-  </div>
-</div>
 
-<script>
-let socket = null;
-
-function toggleChat() {
-  const chatBox = document.getElementById("chat-box");
-  chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
-
-  if (!socket && chatBox.style.display === "block") {
-    const username = "{{ request.user.username|escapejs }}";
-    socket = new WebSocket(`ws://${window.location.host}/ws/chat/${username}/`);
-
-    socket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      const chatMessages = document.getElementById("chat-messages");
-      chatMessages.innerHTML += `<div><strong>${data.sender}:</strong> ${data.message}</div>`;
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
-  }
-}
-
-function sendMessage() {
-  const input = document.getElementById("chat-input");
-  const message = input.value.trim();
-
-  if (message && socket) {
-    socket.send(JSON.stringify({ "message": message }));
-    input.value = "";
-  }
-}
-</script>
 
 
 </body>

@@ -23,16 +23,7 @@ INSTALLED_APPS = [
     'core',  # Projenin ana app'i
 ]
 
-ASGI_APPLICATION = 'wafelinvest.asgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [os.environ.get("redis-cli --tls -u redis://default:AZhKAAIjcDFhMWVkZDc1YmJkYzk0ZjkyOWYxYzUzNGFmOTUwODdlYnAxMA@desired-jackal-38986.upstash.io:6379")],
-        },
-    },
-}
 
 
 
