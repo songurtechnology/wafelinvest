@@ -84,11 +84,11 @@ def update_user_investment_summary(profile):
 
 @staff_member_required
 def chat_admin_view(request):
-    messages = ChatMessage.objects.all().order_by('-timestamp')[:50]
+    messages = ChatMessage.objects.all().order_by('timestamp')
     context = {
         'messages': messages
     }
-    return render(request, 'admin/chat_admin.html', context)
+    return render(request, 'chat_admin.html', {'messages': messages})
 
 @login_required
 def send_message_view(request):
