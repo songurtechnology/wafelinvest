@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime, timedelta, timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
@@ -14,7 +16,7 @@ import json
 from .models import (
     Package, Investment, PaymentConfirmation, CryptoWallet,
     SiteSetting, UserInvestmentSummary, Profile,
-    ChatMessage  # <-- Chat modeli ekledim, kendi modelinle değiştir
+    ChatMessage, User
 )
 from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
@@ -80,17 +82,37 @@ def update_user_investment_summary(profile):
     summary.has_active_investment = approved_investments.exists()
     summary.save()
 
-    # Admin panelinde chat geçmişini göstermek için view
-@staff_member_required  # Sadece admin ve staff erişebilir
-def admin_chat_view(request):
-    messages_qs = ChatMessage.objects.order_by('-timestamp')  # Mesajları zamanına göre ters sırada getir
-    unread_count = ChatMessage.objects.filter(is_read=False).count()  # Okunmamış mesaj sayısı
-
+@staff_member_required
+def chat_admin_view(request):
+    messages = ChatMessage.objects.all().order_by('-timestamp')[:50]
     context = {
-        'chat_messages': messages_qs,
-        'unread_count': unread_count,
+        'messages': messages
     }
     return render(request, 'admin/chat_admin.html', context)
+
+@csrf_exempt  # mümkünse kaldır, CSRF ile gönderim yapabilirsin
+@login_required
+def send_message_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            message = data.get("message")
+            receiver_username = data.get("receiver")
+            receiver = User.objects.filter(username=receiver_username).first()
+
+            if not receiver:
+                return JsonResponse({"status": "error", "message": "Alıcı bulunamadı"})
+
+            if message:
+                ChatMessage.objects.create(sender=request.user, receiver=receiver, message=message)
+                return JsonResponse({"status": "ok"})
+
+            return JsonResponse({"status": "error", "message": "Mesaj boş olamaz"})
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+
+    return JsonResponse({"status": "error", "message": "Geçersiz istek"})
 
 def home(request):
     packages = Package.objects.all()[:3]  # Sadece 3 tanesini al
