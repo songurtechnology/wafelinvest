@@ -107,7 +107,7 @@ def package_detail(request, pk):
     context = {
         'package': package,
         'expected_return': expected_return,
-        'duration': package.duration,  # ✳️ Bu satır EKLENSİN
+        'duration': package.duration_days,  # ✳️ Bu satır EKLENSİN
     }
     return render(request, 'core/package_detail.html', context)
 
@@ -179,7 +179,7 @@ def invest(request, package_id):
         'form': form,
         'package': package,
         'expected_return': expected_return,
-        'duration': package.duration,
+        'duration': package.duration_days,
         'description': package.description,
         'profit_percent': package.profit_percent,
     })
