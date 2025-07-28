@@ -42,12 +42,10 @@ RETURN_RATES = {
 
 
 def calculate_expected_return(package, amount):
-    try:
-        if package and package.profit_percent and amount:
-            return round(amount * (package.profit_percent / 100), 2)
-    except Exception:
-        pass
+    if package is not None and package.profit_percent is not None and amount is not None:
+        return amount * (package.profit_percent / 100)
     return None
+
 
 def update_user_investment_summary(profile):
     approved_investments = Investment.objects.filter(profile=profile, status=Investment.STATUS_APPROVED)
