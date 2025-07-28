@@ -92,30 +92,22 @@ def chat_admin_view(request):
 
 @login_required
 def send_message_view(request):
-    if request.method == "POST":
+    if request.method == 'POST':
+        receiver_id = request.POST.get('receiver_id')
+        message = request.POST.get('message')
+
         try:
-            # Profil kontrolü
-            if not hasattr(request.user, 'profile'):
-                return JsonResponse({"status": "error", "message": "Profiliniz yok, mesaj gönderemezsiniz."})
+            receiver = User.objects.get(id=receiver_id)
+            ChatMessage.objects.create(
+                sender=request.user,
+                receiver=receiver,
+                message=message
+            )
+            return JsonResponse({'success': True})
+        except User.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Receiver not found'})
 
-            data = json.loads(request.body)
-            message = data.get("message")
-            receiver_username = data.get("receiver")
-            receiver = User.objects.filter(username=receiver_username).first()
-
-            if not receiver:
-                return JsonResponse({"status": "error", "message": "Alıcı bulunamadı"})
-
-            if message:
-                ChatMessage.objects.create(sender=request.user, receiver=receiver, message=message)
-                return JsonResponse({"status": "ok"})
-
-            return JsonResponse({"status": "error", "message": "Mesaj boş olamaz"})
-
-        except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)})
-
-    return JsonResponse({"status": "error", "message": "Geçersiz istek"})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 def home(request):
     packages = Package.objects.all()[:3]  # Sadece 3 tanesini al

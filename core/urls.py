@@ -28,7 +28,7 @@ urlpatterns = [
     # Profil
     path('profile/', views.profile, name='profile'),
 
-    # admin chat views
-    path('admin/chat/', views.chat_admin_view, name='admin_chat'),
+    # admi char view
+    path('admin/chat/', views.chat_admin_view, name='admin_chat_view'),
     path('send-message/', views.send_message_view, name='send_message'),
 ]
