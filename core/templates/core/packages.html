@@ -60,7 +60,7 @@ yatırım paketleri, sabit getiri, stroopwafel yatırımı, güvenli yatırım, 
         </h3>
         <ul class="list-unstyled small text-muted mb-4">
           <li><i class="bi bi-clock me-2" aria-hidden="true"></i> Süre: 
-            <strong>{{ package.duration|default_if_none:"Bilgi Yok" }} Gün</strong>
+            <p><strong>Süre:</strong> {{ package.duration|default:"Bilgi yok" }} gün</p>
           </li>
           <li><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i> Getiri:
             <strong>%{{ package.profit_percent|default_if_none:"Bilgi Yok" }}</strong>
@@ -70,7 +70,7 @@ yatırım paketleri, sabit getiri, stroopwafel yatırımı, güvenli yatırım, 
 
         <div class="collapse mb-3" id="desc-{{ package.id }}" aria-live="polite" aria-atomic="true" aria-expanded="false">
           <p class="text-muted small" style="white-space: pre-line;">
-            {{ package.description|default_if_none:"Bu paket hakkında detaylı bilgi almak için bizimle iletişime geçebilirsiniz." }}
+            {{ package.description|default:"Bu paketin açıklaması henüz girilmedi." }}
           </p>
         </div>
 

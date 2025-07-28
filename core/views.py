@@ -42,9 +42,12 @@ RETURN_RATES = {
 
 
 def calculate_expected_return(package, amount):
-    rate = RETURN_RATES.get(package.price, 0)
-    expected_return = amount + (amount * rate)
-    return expected_return
+    if package and amount and package.profit_percent:
+        try:
+            return amount * (package.profit_percent / 100)
+        except Exception:
+            return None
+    return None
 
 def update_user_investment_summary(profile):
     approved_investments = Investment.objects.filter(profile=profile, status=Investment.STATUS_APPROVED)
@@ -95,19 +98,16 @@ def package_detail(request, pk):
     package = get_object_or_404(Package, pk=pk)
 
     expected_return = None
-    # price ve profit_percent hem None hem de 0 ihtimaline karşı kontrol edelim
-    if package.price is not None and package.price > 0 and \
-       package.profit_percent is not None and package.profit_percent > 0:
-        package.duration_days is not None and package.duration_days > 0
-
+    if package.price and package.profit_percent:
         try:
             expected_return = package.price * (package.profit_percent / 100)
         except Exception:
-            expected_return = None  # Herhangi bir hata durumunda None kalacak
+            expected_return = None
 
     context = {
         'package': package,
         'expected_return': expected_return,
+        'duration': package.duration,  # ✳️ Bu satır EKLENSİN
     }
     return render(request, 'core/package_detail.html', context)
 
@@ -152,6 +152,9 @@ def logout_view(request):
 def invest(request, package_id):
     package = get_object_or_404(Package, id=package_id)
     profile = request.user.profile
+
+    expected_return = calculate_expected_return(package, package.price)
+
     if request.method == 'POST':
         form = InvestmentForm(request.POST, profile=profile, package=package)
         if form.is_valid():
@@ -171,7 +174,16 @@ def invest(request, package_id):
             messages.error(request, 'Formda hata var.')
     else:
         form = InvestmentForm(profile=profile, package=package)
-    return render(request, 'core/invest.html', {'form': form, 'package': package})
+
+    return render(request, 'core/invest.html', {
+        'form': form,
+        'package': package,
+        'expected_return': expected_return,
+        'duration': package.duration,
+        'description': package.description,
+        'profit_percent': package.profit_percent,
+    })
+
 
 @login_required
 def submit_payment(request, investment_id):

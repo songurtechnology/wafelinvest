@@ -36,29 +36,19 @@
           <!-- Getiri -->
           <div class="text-center mb-4">
             <span class="badge bg-info fs-6 px-3 py-2 rounded-pill">
-              Getiri Oranı:
-              {% if package.price == 30 or package.price == 50 %} %50
-              {% elif package.price == 100 or package.price == 150 %} %75
-              {% elif package.price == 250 or package.price == 1000 %} %100
-              {% else %} Belirtilmedi
-              {% endif %}
+              Getiri Oranı: {{ profit_percent|default:"Bilgi yok" }}%
             </span>
           </div>
 
           <!-- Paket Açıklaması -->
           <p class="text-muted small text-center mb-4 fst-italic">
-            {% if package.price == 30 or package.price == 50 %}
-              Bu paket küçük yatırımcılar için idealdir. 4 gün içerisinde %50 getiri sağlar.
-            {% elif package.price == 100 or package.price == 150 %}
-              Orta seviyeli yatırımcılar için uygundur. 7 gün içinde %75 kazanç sunar.
-            {% elif package.price == 250 or package.price == 1000 %}
-              Profesyonel yatırımcılar için özel hazırlanmıştır. 12 gün içinde %100 net kazanç sağlar.
-            {% else %}
-              Bu paket hakkında detaylı bilgi daha sonra sağlanacaktır.
-            {% endif %}
+            Açıklama: {{ description|default:"Açıklama yok" }}
           </p>
 
-
+          <!-- Süre -->
+          <p class="text-center">
+            <strong>Süre:</strong> {{ duration|default:"Bilgi yok" }} gün
+          </p>
         <!-- Form -->
         <form method="POST" novalidate>
           {% csrf_token %}
