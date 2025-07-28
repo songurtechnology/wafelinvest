@@ -77,10 +77,6 @@
           <li class="list-group-item d-flex align-items-center"><i class="bi bi-cash me-2 text-success fs-5"></i> Getiri: <strong class="ms-auto">{% if expected_return %} {{ expected_return|floatformat:2 }} Euro {% else %} Bilgi yok {% endif %}</strong></li>
           <li class="list-group-item d-flex align-items-center"><i class="bi bi-arrow-repeat me-2 text-warning fs-5"></i> İptal: <strong class="ms-auto">%30 kesintiyle iade</strong></li>
           <li class="list-group-item d-flex align-items-center"><i class="bi bi-shield-lock me-2 text-primary fs-5"></i> Güvenlik: <strong class="ms-auto">Manuel onaylı ödeme</strong></li>
-
-          <p>DEBUG RETURN: {{ expected_return }}</p>
-          <p>DEBUG PRICE: {{ package.price }}</p>
-          <p>DEBUG PROFIT: {{ profit_percent }}</p>
         
         </ul>
 
