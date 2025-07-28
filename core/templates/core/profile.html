@@ -120,16 +120,44 @@
   </div>
 </div>
 
-<div id="chat-box" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
-  {% for msg in messages %}
-  <div><strong>{{ msg.sender.username }}:</strong> {{ msg.message }}</div>
-{% endfor %}
+<!-- Chat kutusu -->
+<div id="chat-container" style="position: fixed; bottom: 20px; right: 20px; width: 300px; z-index: 9999;">
+    <div style="background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 8px; overflow: hidden;">
+        <div style="background: #333; color: #fff; padding: 10px; font-weight: bold;">Admin ile Sohbet</div>
+        <div id="chat-log" style="height: 200px; overflow-y: scroll; padding: 10px; background: white;"></div>
+        <input id="chat-message-input" type="text" placeholder="Mesaj yaz..." style="width: 100%; padding: 8px; border: none; border-top: 1px solid #ccc;">
+    </div>
 </div>
 
-<form id="chat-form" style="margin-top: 10px;">
-  <input id="chat-message-input" type="text" placeholder="Mesajınızı yazın..." required class="form-control" />
-  <button type="submit" class="btn btn-primary mt-2">Gönder</button>
-</form>
+<script>
+    const chatSocket = new WebSocket(
+    'wss://' + window.location.host + '/ws/chat/'
+  );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const log = document.querySelector('#chat-log');
+        const messageEl = document.createElement('div');
+        messageEl.textContent = `${data.sender}: ${data.message}`;
+        log.appendChild(messageEl);
+        log.scrollTop = log.scrollHeight;
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Sohbet bağlantısı kapatıldı.');
+    };
+
+    const input = document.querySelector('#chat-message-input');
+    input.addEventListener('keyup', function(e) {
+        if (e.keyCode === 13 && input.value.trim() !== '') {
+            chatSocket.send(JSON.stringify({ 'message': input.value }));
+            input.value = '';
+        }
+    });
+</script>
+
+
+
 
 <!-- Scriptler -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -237,30 +265,7 @@
   });
 </script>
 
-  <script>
-    const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
 
-    chatSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      const chatBox = document.getElementById('chat-box');
-      chatBox.innerHTML += `<div><strong>${data.sender}:</strong> ${data.message}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-    };
-
-    chatSocket.onclose = function(e) {
-      console.error('Chat bağlantısı kapandı.');
-    };
-
-    document.getElementById('chat-form').onsubmit = function(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-message-input');
-      const message = input.value.trim();
-      if (message.length > 0) {
-        chatSocket.send(JSON.stringify({ 'message': message }));
-        input.value = '';
-      }
-    };
-  </script>
 {% endblock %}
 
 {% block extra_script %}

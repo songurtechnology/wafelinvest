@@ -17,6 +17,8 @@ from .models import (
 # User admin kaydını kaldır
 admin.site.unregister(User)
 
+admin.site.register(ChatMessage)
+
 # User admin yeniden kaydediliyor
 @admin.register(User)
 class CustomUserAdmin(BaseUserAdmin):
@@ -40,6 +42,8 @@ class SiteSettingAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         # Sadece bir tane SiteSetting olmasına izin ver
         return SiteSetting.objects.count() < 1
+    
+    
 
 
 @admin.register(CryptoWallet)
@@ -160,14 +164,3 @@ class PackageAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_editable = ('price', 'duration_days', 'profit_percent')
 
-@admin.register(ChatMessage)
-class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ('sender', 'receiver', 'short_message', 'timestamp', 'is_read')
-    list_filter = ('is_read', 'timestamp')
-    search_fields = ('sender__username', 'receiver__username', 'message')
-    ordering = ('-timestamp',)
-    readonly_fields = ('sender', 'receiver', 'message', 'timestamp')
-
-    def short_message(self, obj):
-        return obj.message[:50] + ('...' if len(obj.message) > 50 else '')
-    short_message.short_description = 'Mesaj (Özet)'

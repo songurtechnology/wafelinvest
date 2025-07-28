@@ -1,3 +1,4 @@
+# core/consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import User
@@ -11,13 +12,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
 
-        # Her kullanıcı sadece admin ile konuşur
         self.room_group_name = f"chat_{self.user.username}_admin"
 
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
+
         await self.accept()
 
     async def disconnect(self, close_code):

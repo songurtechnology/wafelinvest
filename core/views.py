@@ -82,41 +82,7 @@ def update_user_investment_summary(profile):
     summary.has_active_investment = approved_investments.exists()
     summary.save()
 
-@staff_member_required
-def chat_admin_view(request):
-    messages = ChatMessage.objects.all().order_by('timestamp')
-    context = {
-        'messages': messages
-    }
-    return render(request, 'chat_admin.html', {'messages': messages})
 
-@login_required
-def profile_chat_view(request):
-    admin = User.objects.get(username='admin')
-    messages = ChatMessage.objects.filter(
-        sender__in=[request.user, admin],
-        receiver__in=[request.user, admin]
-    )
-    return render(request, 'core/profile.html', {'messages': messages})
-
-@login_required
-def send_message_view(request):
-    if request.method == 'POST':
-        receiver_id = request.POST.get('receiver_id')
-        message = request.POST.get('message')
-
-        try:
-            receiver = User.objects.get(id=receiver_id)
-            ChatMessage.objects.create(
-                sender=request.user,
-                receiver=receiver,
-                message=message
-            )
-            return JsonResponse({'success': True})
-        except User.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Receiver not found'})
-
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 def home(request):
     packages = Package.objects.all()[:3]  # Sadece 3 tanesini al
@@ -189,6 +155,10 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'core/login.html', {'form': form})
+
+@login_required
+def profile_view(request):
+    return render(request, 'core/profile.html', {'user': request.user})
 
 @login_required
 def logout_view(request):
