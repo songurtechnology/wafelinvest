@@ -154,20 +154,20 @@ def update_user_investment_summary(profile):
     summary.has_active_investment = investments.exists()
     summary.save()
 
-    @admin.register(Package)
-    class PackageAdmin(admin.ModelAdmin):
-        list_display = ('name', 'price', 'duration_days', 'profit_percent')
-        search_fields = ('name',)
-        list_editable = ('price', 'duration_days', 'profit_percent')
+@admin.register(Package)
+class PackageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'duration_days', 'profit_percent')
+    search_fields = ('name',)
+    list_editable = ('price', 'duration_days', 'profit_percent')
 
-        @admin.register(ChatMessage)
-        class ChatMessageAdmin(admin.ModelAdmin):
-            list_display = ('user', 'short_message', 'timestamp', 'is_read')
-            list_filter = ('is_read', 'timestamp')
-            search_fields = ('user__username', 'message')
-            ordering = ('-timestamp',)
-            readonly_fields = ('user', 'message', 'timestamp')
+    @admin.register(ChatMessage)
+    class ChatMessageAdmin(admin.ModelAdmin):
+        list_display = ('user', 'short_message', 'timestamp', 'is_read')
+        list_filter = ('is_read', 'timestamp')
+        search_fields = ('user__username', 'message')
+        ordering = ('-timestamp',)
+        readonly_fields = ('user', 'message', 'timestamp')
 
-        def short_message(self, obj):
-            return obj.message[:50] + ('...' if len(obj.message) > 50 else '')
-        short_message.short_description = 'Mesaj (Özet)'
+    def short_message(self, obj):
+        return obj.message[:50] + ('...' if len(obj.message) > 50 else '')
+    short_message.short_description = 'Mesaj (Özet)'
