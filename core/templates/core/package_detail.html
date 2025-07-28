@@ -55,11 +55,14 @@
                 <i class="bi bi-clock me-2 text-primary" aria-hidden="true"></i>
                 <strong>Süre:</strong>
                 <span class="ms-1">
-                  {% if package.duration %}
-                    {{ package.duration }} Gün
-                  {% else %}
-                    Bilgi Yok
-                  {% endif %}
+                  <p>
+                    <strong>Süre:</strong> 
+                    {% if package.duration_days %}
+                      {{ package.duration_days }} gün
+                    {% else %}
+                      Bilgi yok
+                    {% endif %}
+                  </p>
                 </span>
               </li>
               <li class="list-group-item d-flex align-items-center">
