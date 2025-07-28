@@ -11,7 +11,6 @@ from .models import (
     SiteSetting,
     UserInvestmentSummary,
     Profile,
-    ChatMessage,
 )
 
 # User admin kaydını kaldır
