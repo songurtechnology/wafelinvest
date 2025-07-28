@@ -90,11 +90,14 @@ def chat_admin_view(request):
     }
     return render(request, 'admin/chat_admin.html', context)
 
-@csrf_exempt  # mümkünse kaldır, CSRF ile gönderim yapabilirsin
 @login_required
 def send_message_view(request):
     if request.method == "POST":
         try:
+            # Profil kontrolü
+            if not hasattr(request.user, 'profile'):
+                return JsonResponse({"status": "error", "message": "Profiliniz yok, mesaj gönderemezsiniz."})
+
             data = json.loads(request.body)
             message = data.get("message")
             receiver_username = data.get("receiver")
