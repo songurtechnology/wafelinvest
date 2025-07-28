@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,9 +10,11 @@ from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 import json
 
+# Modeller ve formlar...
 from .models import (
     Package, Investment, PaymentConfirmation, CryptoWallet,
-    SiteSetting, UserInvestmentSummary, Profile
+    SiteSetting, UserInvestmentSummary, Profile,
+    ChatMessage  # <-- Chat modeli ekledim, kendi modelinle değiştir
 )
 from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
@@ -54,6 +57,8 @@ def calculate_expected_return(package, amount):
     return None
 
 
+
+
 def update_user_investment_summary(profile):
     approved_investments = Investment.objects.filter(profile=profile, status=Investment.STATUS_APPROVED)
     aggregates = approved_investments.aggregate(
@@ -74,6 +79,18 @@ def update_user_investment_summary(profile):
     summary.pending_payments = pending_payments_count
     summary.has_active_investment = approved_investments.exists()
     summary.save()
+
+    # Admin panelinde chat geçmişini göstermek için view
+@staff_member_required  # Sadece admin ve staff erişebilir
+def admin_chat_view(request):
+    messages_qs = ChatMessage.objects.order_by('-timestamp')  # Mesajları zamanına göre ters sırada getir
+    unread_count = ChatMessage.objects.filter(is_read=False).count()  # Okunmamış mesaj sayısı
+
+    context = {
+        'chat_messages': messages_qs,
+        'unread_count': unread_count,
+    }
+    return render(request, 'admin/chat_admin.html', context)
 
 def home(request):
     packages = Package.objects.all()[:3]  # Sadece 3 tanesini al

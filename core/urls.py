@@ -27,4 +27,7 @@ urlpatterns = [
 
     # Profil
     path('profile/', views.profile, name='profile'),
+
+    # admin chat views
+    path('admin/chat/', views.admin_chat_view, name='admin_chat_view'),
 ]
