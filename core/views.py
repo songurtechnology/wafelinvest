@@ -223,17 +223,21 @@ def submit_payment(request, investment_id):
             messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
             return redirect('payment_success', investment_id=investment.id)
         else:
-            messages.error(request, 'Geçerli bir dosya yükleyin ve formu doğru doldurun.')
+            messages.error(request, 'Geçerli bir dosya yükleyin.')
     else:
         form = PaymentConfirmationForm()
 
-    return render(request, 'submit_payment.html', {
+    crypto_wallet = CryptoWallet.objects.filter(active=True).first()
+    
+    return render(request, 'core/submit_payment.html', {
         'form': form,
         'investment': investment,
+        'crypto_wallet': crypto_wallet,  # Şablonda gösterilecekse
     })
 
+  
 
-@login_required
+
 def payment_success(request, investment_id):
     investment = get_object_or_404(Investment, id=investment_id)
     context = {

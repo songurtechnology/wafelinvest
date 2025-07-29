@@ -18,9 +18,7 @@ urlpatterns = [
     path('invest/<int:package_id>/', views.invest, name='invest'),
 
     # Ödeme işlemleri
-# DOĞRU TANIM
-    path('investment/<int:investment_id>/submit/', views.submit_payment, name='submit_payment'),
-
+    path('payment/submit/<int:investment_id>/', views.submit_payment, name='submit_payment'),
 
     path('payment-success/<int:investment_id>/', views.payment_success, name='payment_success'),
 
