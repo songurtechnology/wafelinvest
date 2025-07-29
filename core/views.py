@@ -223,20 +223,15 @@ def submit_payment(request, investment_id):
             messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
             return redirect('payment_success', investment_id=investment.id)
         else:
-            messages.error(request, 'Geçerli bir dosya yükleyin.')
+            messages.error(request, 'Geçerli bir dosya yükleyin ve formu doğru doldurun.')
     else:
         form = PaymentConfirmationForm()
 
-    crypto_wallet = CryptoWallet.objects.filter(active=True).first()
-  
-
-    context = {
+    return render(request, 'submit_payment.html', {
         'form': form,
         'investment': investment,
-        'crypto_wallet': crypto_wallet,
-        "support_email": "wafelinvest@gmail.com",
-    }
-    return render(request, 'core/submit_payment.html', context)
+    })
+
 
 @login_required
 def payment_success(request, investment_id):

@@ -88,8 +88,6 @@ class InvestmentForm(forms.ModelForm):
         self._profile = profile
         self._package = package
 
-
-
     def clean(self):
         cleaned_data = super().clean()
         agreement = cleaned_data.get('agreement')
@@ -102,6 +100,7 @@ class InvestmentForm(forms.ModelForm):
             self.instance.package = self._package
 
         return cleaned_data
+
 
 
 
