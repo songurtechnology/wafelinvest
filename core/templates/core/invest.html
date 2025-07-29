@@ -49,7 +49,7 @@
           <p class="text-center">
             <strong>Süre:</strong> {{ duration|default:"Bilgi yok" }} gün
           </p>
-          <form method="POST" action="{% url 'submit_payment' package.id %}" enctype="multipart/form-data" novalidate>
+          <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
 

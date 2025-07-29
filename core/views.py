@@ -14,8 +14,8 @@ import json
 
 # Modeller ve formlar...
 from .models import (
-    Package, Investment, PaymentConfirmation, CryptoWallet,
-    SiteSetting, UserInvestmentSummary, Profile, User
+    Package, Investment, PaymentConfirmation, CryptoWallet, 
+    UserInvestmentSummary, Profile, User
 )
 from .forms import (
     RegisterForm, InvestmentForm, PaymentConfirmationForm, LoginForm
@@ -221,7 +221,7 @@ def submit_payment(request, investment_id):
             confirmation.save()
             update_user_investment_summary(profile)
             messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
-            return redirect('payment_success', investment_id=investment.id)
+            return redirect('core/payment_success', investment_id=investment.id)
         else:
             messages.error(request, 'Geçerli bir dosya yükleyin.')
     else:
@@ -237,7 +237,7 @@ def submit_payment(request, investment_id):
         'crypto_wallet': crypto_wallet,
         "support_email": "afelinvest@gmail.com",
     }
-    return render(request, 'core/submit_payment.html', context)
+    return redirect('core/submit_payment', investment_id=investment.id)
 
 @login_required
 def payment_success(request, investment_id):
