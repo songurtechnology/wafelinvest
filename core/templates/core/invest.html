@@ -50,7 +50,7 @@
           <strong>Süre:</strong> {{ duration|default:"Bilgi yok" }} gün
         </p>
 
-        <!-- Form -->
+        <!-- SADECE TEK BİR FORM OLMALI -->
         <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
           <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
@@ -66,8 +66,7 @@
             🚀 Yatırımı Onayla
           </button>
         </form>
-      </div>
-    </div>
+
 
     <!-- Bilgilendirme Paneli -->
     <div class="col-12 col-md-10 col-lg-5">
