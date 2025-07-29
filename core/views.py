@@ -236,7 +236,7 @@ def submit_payment(request, investment_id):
         'crypto_wallet': crypto_wallet,
         "support_email": "afelinvest@gmail.com",
     }
-    return redirect('core/submit_payment', investment_id=investment.id)
+    return render(request, 'core/submit_payment.html', context)
 
 @login_required
 def payment_success(request, investment_id):

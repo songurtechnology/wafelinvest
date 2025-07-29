@@ -462,18 +462,13 @@
       </div>
 
 
-      <!-- Ödeme Kanıtı Formu -->
+            <!-- Ödeme Kanıtı Formu -->
       <form method="POST" action="{% url 'submit_payment' investment.id %}" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
-        <input type="hidden" name="investment" value="{{ investment.id }}">
 
         <div class="mb-4">
-          <label for="{{ form.payment_screenshot.id_for_label }}" class="form-label">
-            Ödeme Kanıtı <span class="text-danger">*</span>
-          </label>
+          <label for="{{ form.payment_screenshot.id_for_label }}" class="form-label">Ödeme Kanıtı</label>
           {{ form.payment_screenshot|add_class:"form-control form-control-lg" }}
-          <div class="form-text">JPG, PNG ya da PDF formatında maksimum 5 MB dosya yükleyin.</div>
-          <div class="invalid-feedback">Lütfen geçerli bir dosya seçin.</div>
         </div>
 
         <div class="d-grid mb-5">
@@ -482,7 +477,6 @@
           </button>
         </div>
       </form>
-
 
 
 
