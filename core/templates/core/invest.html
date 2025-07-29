@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load widget_tweaks %}
 {% block title %}Yatırım Yap - {{ package.name }} | WafelInvest{% endblock %}
 
 {% block meta_tags %}
@@ -52,19 +51,24 @@
         </p>
 
         <!-- SADECE TEK BİR FORM OLMALI -->
-        <form method="POST" action="{% url 'invest' package.id %}">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+
           {% csrf_token %}
           <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
+
           <div class="form-check form-switch mb-4">
             {{ form.agreement }}
             <label for="{{ form.agreement.id_for_label }}" class="form-check-label fw-semibold">
               Yatırım koşullarını okudum ve kabul ediyorum.
             </label>
           </div>
+
           <button type="submit" class="btn btn-gradient w-100 py-3 fw-bold rounded-pill shadow-sm" aria-label="Yatırımı Onayla">
             🚀 Yatırımı Onayla
           </button>
         </form>
+      </div>
+    </div>
 
     <!-- Bilgilendirme Paneli -->
     <div class="col-12 col-md-10 col-lg-5">
