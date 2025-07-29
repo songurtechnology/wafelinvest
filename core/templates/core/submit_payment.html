@@ -463,7 +463,7 @@
 
 
       <!-- Ödeme Kanıtı Formu -->
-      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+      <form method="POST" action="{% url 'submit_payment' investment.id %}" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
         <input type="hidden" name="investment" value="{{ investment.id }}">
 
