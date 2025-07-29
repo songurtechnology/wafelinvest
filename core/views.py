@@ -234,7 +234,7 @@ def submit_payment(request, investment_id):
         'form': form,
         'investment': investment,
         'crypto_wallet': crypto_wallet,
-        "support_email": "afelinvest@gmail.com",
+        "support_email": "wafelinvest@gmail.com",
     }
     return render(request, 'core/submit_payment.html', context)
 
