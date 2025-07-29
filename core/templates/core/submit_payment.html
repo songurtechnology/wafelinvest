@@ -272,56 +272,152 @@
   }
 
 
-  /* Responsive */
-  @media (max-width: 991px) {
-    .container {
-      max-width: 720px;
-      padding: 0 15px;
-    }
-    .platform-card {
-      max-width: 100%;
-    }
-  }
-  @media (max-width: 576px) {
-    .header-section h2 {
-      font-size: 2rem;
-    }
-    .header-section p {
-      font-size: 1rem;
-    }
-    button.btn-warning {
-      font-size: 1.1rem;
-      padding: 12px 0;
-    }
-    .platform-links a {
-      padding: 7px 14px;
-      font-size: 0.85rem;
-    }
-    .email-btn {
-      font-size: 1rem;
-      padding: 10px 30px;
-      background: #0d6efd;
-      border-radius: 50px;
-      color: white;
-      font-weight: 700;
-      box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
-      display: inline-flex;
-      align-items: center;
-      transition: background 0.3s ease, transform 0.2s ease;
-      text-decoration: none;
-    }
+ /* Responsive Düzenlemeler */
 
-    .email-btn i {
-      font-size: 1.3rem;
-      margin-right: 10px;
-    }
-
-    .email-btn:hover {
-      background: #0b5ed7;
-      transform: scale(1.05);
-      color: white;
-    }
+@media (max-width: 1200px) {
+  .container {
+    max-width: 960px;
+    padding: 0 25px;
   }
+}
+
+@media (max-width: 991px) {
+  .container {
+    max-width: 720px;
+    padding: 0 20px;
+  }
+
+  .header-section h2 {
+    font-size: 2.2rem;
+  }
+
+  .info-list li {
+    font-size: 1.1rem;
+  }
+
+  .card-custom {
+    margin-bottom: 1.5rem;
+  }
+
+  .platform-card {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .platforms-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .email-support {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-section h2 {
+    font-size: 2rem;
+  }
+
+  .header-section p {
+    font-size: 1rem;
+  }
+
+  label.form-label {
+    font-size: 1rem;
+  }
+
+  input.form-control-lg {
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+
+  button.btn-warning {
+    font-size: 1.1rem;
+    padding: 12px 0;
+  }
+
+  .info-list li {
+    font-size: 1rem;
+  }
+
+  .platform-name {
+    font-size: 1.2rem;
+  }
+
+  .platform-links a {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  .header-section {
+    padding: 25px 15px;
+  }
+
+  .header-section h2 {
+    font-size: 1.75rem;
+  }
+
+  .header-section p {
+    font-size: 0.95rem;
+  }
+
+  .card-custom h5 {
+    font-size: 1rem;
+  }
+
+  .info-list li {
+    font-size: 0.95rem;
+  }
+
+  label.form-label {
+    font-size: 0.95rem;
+  }
+
+  input.form-control-lg {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .platform-logo {
+    max-width: 60px;
+  }
+
+  .email-btn {
+    font-size: 1rem;
+    padding: 10px 25px;
+  }
+
+  .email-btn i {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .platform-links a {
+    display: block;
+    width: 100%;
+    margin: 0.3rem 0;
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+
+  .btn-warning {
+    font-size: 1rem;
+  }
+
+  .email-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 </style>
 
 <div class="container py-5">
