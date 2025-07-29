@@ -66,8 +66,8 @@ class LoginForm(AuthenticationForm):
 
 class InvestmentForm(forms.ModelForm):
     agreement = forms.BooleanField(
-        label='Yatırım şartlarını okudum ve kabul ediyorum.',
         required=True,
+        label='Yatırım şartlarını okudum ve kabul ediyorum.',
         error_messages={'required': 'Lütfen yatırım şartlarını kabul edin.'}
     )
 

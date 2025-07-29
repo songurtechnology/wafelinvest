@@ -51,7 +51,7 @@
         </p>
 
         <!-- SADECE TEK BİR FORM OLMALI -->
-        <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
           <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
 
@@ -66,6 +66,28 @@
             🚀 Yatırımı Onayla
           </button>
         </form>
+
+        <!-- TEST SCRIPT: FORM SUBMIT EDİLİYOR MU? -->
+        <script>
+          const form = document.querySelector("form");
+          form.addEventListener("submit", function(e) {
+            alert("✅ Form submit edilmeye çalışılıyor.");
+            console.log("📤 Form gönderilmeye çalışılıyor...");
+          });
+        </script>
+
+        <script>
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function(e) {
+          const checkbox = form.querySelector('input[type="checkbox"]');
+          if (!checkbox.checked) {
+            alert("⚠️ Lütfen yatırım koşullarını kabul edin.");
+            e.preventDefault();  // Form gönderimini durdur
+            return false;
+          }
+          alert("✅ Her şey yolunda. Form gönderiliyor...");
+        });
+      </script>
 
 
     <!-- Bilgilendirme Paneli -->
