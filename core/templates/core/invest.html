@@ -67,28 +67,6 @@
           </button>
         </form>
 
-        <!-- TEST SCRIPT: FORM SUBMIT EDİLİYOR MU? -->
-        <script>
-          const form = document.querySelector("form");
-          form.addEventListener("submit", function(e) {
-            alert("✅ Form submit ediliyor."); // iPhone’da çıkmalı
-            console.log("Form gönderiliyor");
-          });
-        </script>
-
-        <script>
-        const form = document.querySelector("form");
-        form.addEventListener("submit", function(e) {
-          const checkbox = form.querySelector('input[type="checkbox"]');
-          if (!checkbox.checked) {
-            alert("⚠️ Lütfen yatırım koşullarını kabul edin.");
-            e.preventDefault();  // Form gönderimini durdur
-            return false;
-          }
-          alert("✅ Her şey yolunda. Form gönderiliyor...");
-        });
-      </script>
-
 
     <!-- Bilgilendirme Paneli -->
     <div class="col-12 col-md-10 col-lg-5">
@@ -203,19 +181,3 @@
   }
 </style>
 {% endblock %}
-
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    if (form) {
-      form.addEventListener('submit', function (event) {
-        console.log("🚀 Form submit edilmeye çalışılıyor.");
-        alert("📤 Form submit edildi! Backend'e gidiyor olmalı.");
-      });
-    } else {
-      console.warn("❌ Form bulunamadı.");
-    }
-  });
-</script>

@@ -11,7 +11,6 @@ from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 import json
-from django.http import HttpResponse 
 
 # Modeller ve formlar...
 from .models import (
@@ -185,12 +184,7 @@ def invest(request, package_id):
                 investment.clean()
                 investment.save()
                 messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
-
-                # 🔽 GEÇİCİ DEBUG
-                return HttpResponse("✅ Backend'e ulaşıldı ve yatırım kaydedildi.")
-
-                # ↪️ Gerçek redirect'i geçici olarak yorum satırı yap:
-                # return redirect('submit_payment', investment_id=investment.id)
+                return redirect('submit_payment', investment_id=investment.id)
             except ValidationError as e:
                 form.add_error(None, e)
         else:
