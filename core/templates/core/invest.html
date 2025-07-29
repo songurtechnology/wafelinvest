@@ -127,150 +127,167 @@
 </div>
 
 <style>
-/* Buton gradient stili */
-.btn-gradient {
-  background: linear-gradient(90deg, #28a745 0%, #218838 100%);
-  color: #fff;
-  transition: background 0.3s ease-in-out, transform 0.2s ease;
-}
-.btn-gradient:hover,
-.btn-gradient:focus {
-  background: linear-gradient(90deg, #218838 0%, #1e7e34 100%);
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 0.5rem 1rem rgba(33, 136, 56, 0.4);
-}
-.btn-gradient:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.25rem rgba(33, 136, 56, 0.75);
-}
-
-/* Accordion ikon düzeltme */
-.accordion-button::after {
-  font-family: "bootstrap-icons" !important;
-  content: "\f078" !important;
-}
-.accordion-button.collapsed::after {
-  content: "\f077" !important;
-}
-
-/* Genel iyileştirmeler */
-.form-check {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.list-group-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.badge {
-  font-size: 0.9rem;
-  padding: 0.4rem 0.75rem;
-}
-
-/* Küçük ekranlar (Mobil) */
-@media (max-width: 576px) {
-  .card.p-5,
-  .card.p-4 {
-    padding: 1.25rem 1rem !important;
+  /* Buton gradient stili */
+  .btn-gradient {
+    background: linear-gradient(90deg, #28a745 0%, #218838 100%);
+    color: #fff;
+    transition: background 0.3s ease-in-out, transform 0.2s ease;
+    border: none;
+    border-radius: 50px;
+  }
+  .btn-gradient:hover,
+  .btn-gradient:focus {
+    background: linear-gradient(90deg, #218838 0%, #1e7e34 100%);
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 0.5rem 1rem rgba(33, 136, 56, 0.4);
+  }
+  .btn-gradient:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(33, 136, 56, 0.75);
   }
 
-  h2 { font-size: 1.5rem; }
-  h3, h4, h5 { font-size: 1.25rem; }
+  /* Accordion ikon düzeltme */
+  .accordion-button::after {
+    font-family: "bootstrap-icons" !important;
+    content: "\f078" !important;
+  }
+  .accordion-button.collapsed::after {
+    content: "\f077" !important;
+  }
 
-  .form-label,
-  .form-check-label,
-  .accordion-button,
-  .accordion-body,
-  .list-group-item,
+  /* Genel iyileştirmeler */
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
   .badge {
     font-size: 0.9rem;
+    padding: 0.4rem 0.75rem;
   }
 
-  .btn,
-  .btn-gradient {
-    font-size: 1rem;
-    padding: 0.7rem 1rem;
+  /* Küçük ekranlar (Mobil - Android, iPhone) */
+  @media (max-width: 576px) {
+    .card.p-5,
+    .card.p-4 {
+      padding: 1.25rem 1rem !important;
+    }
+
+    h2 { font-size: 1.5rem; }
+    h3, h4, h5 { font-size: 1.25rem; }
+
+    .form-label,
+    .form-check-label,
+    .accordion-button,
+    .accordion-body,
+    .list-group-item,
+    .badge {
+      font-size: 0.9rem;
+    }
+
+    .btn,
+    .btn-gradient {
+      font-size: 1rem;
+      padding: 0.7rem 1rem;
+    }
+
+    .form-control {
+      font-size: 1rem;
+    }
+
+    .accordion-item {
+      margin-bottom: 1rem;
+    }
+
+    .text-end {
+      text-align: left !important;
+    }
+
+    .mb-4,
+    .mb-5 {
+      margin-bottom: 1.25rem !important;
+    }
+
+    .pt-4,
+    .pb-4,
+    .py-4 {
+      padding-top: 1rem !important;
+      padding-bottom: 1rem !important;
+    }
   }
 
-  .form-control {
-    font-size: 1rem;
+  /* Orta ekranlar (Tablet - iPad, Android tablet, küçük laptop) */
+  @media (min-width: 577px) and (max-width: 991.98px) {
+    .card.p-5,
+    .card.p-4 {
+      padding: 2rem 1.5rem !important;
+    }
+
+    h2 { font-size: 1.75rem; }
+    h3, h4, h5 { font-size: 1.5rem; }
+
+    .form-control,
+    .form-label,
+    .form-check-label,
+    .accordion-body {
+      font-size: 1rem;
+    }
+
+    .btn,
+    .btn-gradient {
+      padding: 0.75rem 1.25rem;
+      font-size: 1.05rem;
+    }
   }
 
-  .accordion-item {
-    margin-bottom: 1rem;
+  /* Büyük ekranlar (Laptop, masaüstü, geniş tablet) */
+  @media (min-width: 992px) {
+    .card.p-5,
+    .card.p-4 {
+      padding: 2.5rem 2rem !important;
+    }
+
+    h2 { font-size: 2rem; }
+    h3, h4, h5 { font-size: 1.75rem; }
+
+    .form-control {
+      font-size: 1.05rem;
+    }
+
+    .btn,
+    .btn-gradient {
+      font-size: 1.1rem;
+    }
+
+    .accordion-body {
+      font-size: 1rem;
+    }
   }
 
-  .text-end {
-    text-align: left !important;
+  /* Ekstra büyük ekranlar (4K monitörler) */
+  @media (min-width: 1400px) {
+    .container, .card.p-5, .card.p-4 {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    h2 { font-size: 2.25rem; }
+    h3, h4, h5 { font-size: 2rem; }
+
+    .btn,
+    .btn-gradient {
+      font-size: 1.2rem;
+    }
   }
-
-  .mb-4,
-  .mb-5 {
-    margin-bottom: 1.25rem !important;
-  }
-
-  .pt-4,
-  .pb-4,
-  .py-4 {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-  }
-}
-
-/* Orta ekranlar (Tablet - küçük laptop) */
-@media (min-width: 577px) and (max-width: 991.98px) {
-  .card.p-5,
-  .card.p-4 {
-    padding: 2rem 1.5rem !important;
-  }
-
-  h2 { font-size: 1.75rem; }
-  h3, h4, h5 { font-size: 1.5rem; }
-
-  .form-control,
-  .form-label,
-  .form-check-label,
-  .accordion-body {
-    font-size: 1rem;
-  }
-
-  .btn {
-    font-size: 1.05rem;
-  }
-
-  .btn-gradient {
-    padding: 0.75rem 1.25rem;
-    font-size: 1.05rem;
-  }
-}
-
-/* Büyük ekranlar (Laptop ve masaüstü) */
-@media (min-width: 992px) {
-  .card.p-5,
-  .card.p-4 {
-    padding: 2.5rem 2rem !important;
-  }
-
-  h2 { font-size: 2rem; }
-  h3, h4, h5 { font-size: 1.75rem; }
-
-  .form-control {
-    font-size: 1.05rem;
-  }
-
-  .btn,
-  .btn-gradient {
-    font-size: 1.1rem;
-  }
-
-  .accordion-body {
-    font-size: 1rem;
-  }
-}
-
 </style>
+
 
 {% endblock %}
