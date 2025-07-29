@@ -184,7 +184,7 @@ def invest(request, package_id):
                 investment.clean()
                 investment.save()
                 messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
-                return redirect('core/submit_payment', investment_id=investment.id)
+                return redirect('submit_payment', investment_id=investment.id)
             except ValidationError as e:
                 form.add_error(None, e)
         else:
@@ -221,14 +221,13 @@ def submit_payment(request, investment_id):
             confirmation.save()
             update_user_investment_summary(profile)
             messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
-            return redirect('core/payment_success', investment_id=investment.id)
+            return redirect('payment_success', investment_id=investment.id)
         else:
             messages.error(request, 'Geçerli bir dosya yükleyin.')
     else:
         form = PaymentConfirmationForm()
 
     crypto_wallet = CryptoWallet.objects.filter(active=True).first()
-    site_setting = SiteSetting.objects.first()
   
 
     context = {

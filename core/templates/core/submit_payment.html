@@ -463,7 +463,7 @@
 
 
       <!-- Ödeme Kanıtı Formu -->
-      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+      <form method="POST" action="{% url 'submit_payment' investment.id %}" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         <input type="hidden" name="investment" value="{{ investment.id }}">
 
@@ -472,9 +472,7 @@
             Ödeme Kanıtı <span class="text-danger">*</span>
           </label>
           {{ form.payment_screenshot|add_class:"form-control form-control-lg" }}
-          <div class="form-text">
-            JPG, PNG ya da PDF formatında maksimum 5 MB dosya yükleyin.
-          </div>
+          <div class="form-text">JPG, PNG ya da PDF formatında maksimum 5 MB dosya yükleyin.</div>
           <div class="invalid-feedback">Lütfen geçerli bir dosya seçin.</div>
         </div>
 
@@ -490,9 +488,9 @@
 
         <div class="email-support">
           <p>Herhangi bir sorunuz mu var? Bize e-posta gönderin:</p>
-            <a href="mailto:destek@wafelinvest.com" class="email-btn">
-              <i class="bi bi-envelope-fill"></i> Email Destek
-            </a>
+          <a href="mailto:destek@wafelinvest.com" class="email-btn">
+            <i class="bi bi-envelope-fill"></i> Email Destek
+          </a>
         </div>
       </div>
     </div>
