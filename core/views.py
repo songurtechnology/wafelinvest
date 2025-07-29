@@ -221,7 +221,7 @@ def submit_payment(request, investment_id):
             confirmation.save()
             update_user_investment_summary(profile)
             messages.success(request, 'Dekont gönderildi. Onay bekleniyor.')
-            return redirect('payment_success')
+            return redirect('payment_success', investment_id=investment.id)
         else:
             messages.error(request, 'Geçerli bir dosya yükleyin.')
     else:
