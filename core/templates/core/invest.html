@@ -51,7 +51,7 @@
         </p>
 
         <!-- SADECE TEK BİR FORM OLMALI -->
-        <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data" novalidate>
+        <form method="POST" action="{% url 'invest' package.id %}" enctype="multipart/form-data">
           {% csrf_token %}
           <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
 
