@@ -184,7 +184,7 @@ def invest(request, package_id):
                 investment.clean()
                 investment.save()
                 messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
-                return redirect('submit_payment', investment_id=investment.id)
+                return redirect('core/submit_payment', investment_id=investment.id)
             except ValidationError as e:
                 form.add_error(None, e)
         else:
