@@ -202,7 +202,6 @@ def invest(request, package_id):
     })
 
 
-
 @login_required
 def submit_payment(request, investment_id):
     profile = request.user.profile
@@ -230,19 +229,23 @@ def submit_payment(request, investment_id):
 
     crypto_wallet = CryptoWallet.objects.filter(active=True).first()
     site_setting = SiteSetting.objects.first()
-    whatsapp_link = site_setting.whatsapp_support_link if site_setting else "#"
+  
 
     context = {
         'form': form,
         'investment': investment,
         'crypto_wallet': crypto_wallet,
-        'whatsapp_link': whatsapp_link,
+        "support_email": "afelinvest@gmail.com",
     }
     return render(request, 'core/submit_payment.html', context)
 
 @login_required
-def payment_success(request):
-    return render(request, 'core/payment_success.html')
+def payment_success(request, investment_id):
+    investment = get_object_or_404(Investment, id=investment_id)
+    context = {
+        'investment': investment,
+    }
+    return render(request, 'core/payment_success.html', context)
 
 @login_required
 def profile(request):

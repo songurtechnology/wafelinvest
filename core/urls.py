@@ -19,7 +19,7 @@ urlpatterns = [
 
     # Ödeme işlemleri
     path('payment/submit/<int:investment_id>/', views.submit_payment, name='submit_payment'),
-    path('payment-success/', views.payment_success, name='payment_success'),
+    path('payment-success/<int:investment_id>/', views.payment_success, name='payment_success'),
 
     # Politikalar
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
