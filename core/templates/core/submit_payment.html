@@ -4,7 +4,7 @@
 
 <!-- Sayfa Başlığı ve Açıklaması -->
 <title>Ödeme Dekontu Gönder | WafelInvest - Güvenli Yatırım Onayı</title>
-<meta name="description" content="WafelInvest platformunda yatırdığınız tutarın ödeme kanıtını kolayca gönderin. WhatsApp, Telegram ve Signal üzerinden hızlı destek alın.">
+<meta name="description" content="WafelInvest platformunda yatırdığınız tutarın ödeme kanıtını kolayca gönderin. Email, Telegram ve Signal üzerinden hızlı destek alın.">
 
 <!-- Canonical URL -->
 <link rel="canonical" href="https://wafelinvest.com/odeme-kaniti-gonder" />
@@ -235,37 +235,42 @@
     color: #dff0d8;
   }
 
-  /* WhatsApp destek */
-  .whatsapp-support {
+  /* Email destek */
+  .email-support {
     text-align: center;
     margin-top: 4rem;
   }
-  .whatsapp-support p {
-    color: #7f8c8d;
+
+  .email-support p {
+    color: #6c757d;
     font-weight: 600;
   }
-  .whatsapp-btn {
-    background: #25d366;
+
+  .email-btn {
+    background: #0d6efd; /* Bootstrap Primary */
     border-radius: 50px;
     color: white;
     padding: 12px 40px;
     font-weight: 700;
     font-size: 1.1rem;
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
     transition: background 0.3s ease, transform 0.2s ease;
     display: inline-flex;
     align-items: center;
+    text-decoration: none;
   }
-  .whatsapp-btn i {
+
+  .email-btn i {
     font-size: 1.5rem;
     margin-right: 10px;
   }
-  .whatsapp-btn:hover {
-    background: #1ebe57;
+
+  .email-btn:hover {
+    background: #0b5ed7;
     transform: scale(1.05);
-    text-decoration: none;
     color: white;
   }
+
 
   /* Responsive */
   @media (max-width: 991px) {
@@ -292,12 +297,29 @@
       padding: 7px 14px;
       font-size: 0.85rem;
     }
-    .whatsapp-btn {
+    .email-btn {
       font-size: 1rem;
       padding: 10px 30px;
+      background: #0d6efd;
+      border-radius: 50px;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+      display: inline-flex;
+      align-items: center;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
     }
-    .whatsapp-btn i {
+
+    .email-btn i {
       font-size: 1.3rem;
+      margin-right: 10px;
+    }
+
+    .email-btn:hover {
+      background: #0b5ed7;
+      transform: scale(1.05);
+      color: white;
     }
   }
 </style>
@@ -466,12 +488,11 @@
 
 
 
-        <!-- WhatsApp Destek -->
-        <div class="whatsapp-support w-100 mt-5">
-          <p>Ödeme kanıtınızı WhatsApp üzerinden göndermek isterseniz, aşağıdaki butonu kullanabilirsiniz:</p>
-          <a href="https://wa.me/1234567890" target="_blank" rel="noopener" class="whatsapp-btn">
-            <i class="bi bi-whatsapp"></i> WhatsApp Destek
-          </a>
+        <div class="email-support">
+          <p>Herhangi bir sorunuz mu var? Bize e-posta gönderin:</p>
+            <a href="mailto:destek@wafelinvest.com" class="email-btn">
+              <i class="bi bi-envelope-fill"></i> Email Destek
+            </a>
         </div>
       </div>
     </div>

@@ -106,20 +106,9 @@ class InvestmentForm(forms.ModelForm):
 
 
 class PaymentConfirmationForm(forms.ModelForm):
-    whatsapp_number = forms.CharField(
-        required=False,
-        label='WhatsApp Numarası',
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': '+90 ile başlayan WhatsApp numarası (opsiyonel)',
-            'minlength': '10',
-            'autocomplete': 'tel',
-        })
-    )
-
     class Meta:
         model = PaymentConfirmation
-        fields = ['investment', 'whatsapp_number', 'payment_screenshot']
+        fields = ['investment', 'payment_screenshot']
         widgets = {
             'investment': forms.HiddenInput(),
             'payment_screenshot': forms.ClearableFileInput(attrs={
@@ -129,21 +118,11 @@ class PaymentConfirmationForm(forms.ModelForm):
         }
         labels = {
             'payment_screenshot': 'Ödeme Dekontu',
-            'whatsapp_number': 'WhatsApp Numarası',
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['investment'].widget = forms.HiddenInput()
-
-    def clean_whatsapp_number(self):
-        number = self.cleaned_data.get('whatsapp_number')
-        if number:
-            number = number.strip()
-            pattern = r'^\+\d{10,15}$'
-            if not re.match(pattern, number):
-                raise forms.ValidationError("Lütfen geçerli bir uluslararası telefon numarası girin, örn: +905301234567")
-        return number
 
     def clean_payment_screenshot(self):
         file = self.cleaned_data.get('payment_screenshot')
