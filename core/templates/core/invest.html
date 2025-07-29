@@ -71,8 +71,8 @@
         <script>
           const form = document.querySelector("form");
           form.addEventListener("submit", function(e) {
-            alert("✅ Form submit edilmeye çalışılıyor.");
-            console.log("📤 Form gönderilmeye çalışılıyor...");
+            alert("✅ Form submit ediliyor."); // iPhone’da çıkmalı
+            console.log("Form gönderiliyor");
           });
         </script>
 
@@ -203,3 +203,19 @@
   }
 </style>
 {% endblock %}
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        console.log("🚀 Form submit edilmeye çalışılıyor.");
+        alert("📤 Form submit edildi! Backend'e gidiyor olmalı.");
+      });
+    } else {
+      console.warn("❌ Form bulunamadı.");
+    }
+  });
+</script>
