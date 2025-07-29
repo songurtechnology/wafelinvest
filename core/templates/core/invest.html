@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block title %}Yatırım Yap - {{ package.name }} | WafelInvest{% endblock %}
 
 {% block meta_tags %}
@@ -51,7 +52,7 @@
         </p>
 
         <!-- SADECE TEK BİR FORM OLMALI -->
-        <form method="POST" enctype="multipart/form-data" novalidate>
+        <form method="POST" >
 
           {% csrf_token %}
           <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
