@@ -73,7 +73,7 @@ class InvestmentForm(forms.ModelForm):
 
     class Meta:
         model = Investment
-        fields = ['amount', 'agreement']
+        fields = ['agreement']  # ✅ amount is now set via view, not user input
         widgets = {
             'amount': forms.NumberInput(attrs={
                 'class': 'form-control',

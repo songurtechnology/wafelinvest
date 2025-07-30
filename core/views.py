@@ -174,12 +174,15 @@ def invest(request, package_id):
 
     if request.method == 'POST':
         form = InvestmentForm(request.POST, profile=profile, package=package)
+
         if form.is_valid():
             investment = form.save(commit=False)
             investment.profile = profile
             investment.package = package
+            investment.amount = package.price  # ✅ Force amount for safety
             investment.expected_return = calculate_expected_return(package, investment.amount)
             investment.status = Investment.STATUS_PENDING
+
             try:
                 investment.clean()
                 investment.save()
@@ -202,6 +205,7 @@ def invest(request, package_id):
         'description': package.description,
         'profit_percent': package.profit_percent,
     })
+
 
 
 @login_required
