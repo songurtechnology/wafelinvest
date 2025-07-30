@@ -12,11 +12,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-5 d-flex justify-content-center">
   <div class="row g-5 justify-content-center align-items-start">
 
     <!-- Yatırım Formu -->
-    <div class="col-12 col-md-10 col-lg-6 wide-form-card">
+    <div class="col-12 col-md-10 col-lg-8 wide-form-card">
       <div class="card p-4 p-md-5 shadow-sm border-0 rounded-4 bg-white h-100">
         <h2 class="text-center text-primary fw-bold mb-4">Yatırım Yap</h2>
 
@@ -187,16 +187,18 @@
   }
 
   /* FORMU LAPTOPTA GENİŞ GÖSTERMEK İÇİN */
-  .wide-form-card {
-    max-width: 700px; /* Laptop için ideal genişlik */
-    margin-left: auto;
-    margin-right: auto;
-  }
+.wide-form-card {
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  .wide-form-card .card {
-    padding: 2.5rem;
-    border-radius: 1.5rem;
-  }
+.wide-form-card .card {
+  padding: 3rem 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
 
   /* RESPONSIVE KART PADLERİ */
   @media (max-width: 768px) {
