@@ -41,15 +41,6 @@ def create_user_investment_summary(sender, instance, created, **kwargs):
         UserInvestmentSummary.objects.create(profile=instance)
 
 
-class SiteSetting(models.Model):
-    whatsapp_support_link = models.URLField(verbose_name="WhatsApp Destek Bağlantısı", max_length=300)
-
-    def __str__(self):
-        return "Site Ayarları"
-
-    class Meta:
-        verbose_name = "Site Ayarı"
-        verbose_name_plural = "Site Ayarları"
 
 
 class CryptoWallet(models.Model):
@@ -153,7 +144,6 @@ class UserInvestmentSummary(models.Model):
 
 class PaymentConfirmation(models.Model):
     investment = models.OneToOneField(Investment, on_delete=models.CASCADE, related_name='payment_confirmation')
-    whatsapp_number = models.CharField(max_length=20)
     payment_screenshot = models.ImageField(upload_to='payment_screenshots/')
     sent_at = models.DateTimeField(auto_now_add=True)
     admin_approved = models.BooleanField(default=False)

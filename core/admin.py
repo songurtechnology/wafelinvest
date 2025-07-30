@@ -8,7 +8,6 @@ from .models import (
     Investment,
     PaymentConfirmation,
     CryptoWallet,
-    SiteSetting,
     UserInvestmentSummary,
     Profile,
 )
@@ -34,13 +33,6 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email', 'phone_number')
 
 
-@admin.register(SiteSetting)
-class SiteSettingAdmin(admin.ModelAdmin):
-    list_display = ('whatsapp_support_link',)
-
-    def has_add_permission(self, request):
-        # Sadece bir tane SiteSetting olmasına izin ver
-        return SiteSetting.objects.count() < 1
     
     
 
@@ -97,15 +89,14 @@ class InvestmentAdmin(admin.ModelAdmin):
 @admin.register(PaymentConfirmation)
 class PaymentConfirmationAdmin(admin.ModelAdmin):
     list_display = (
-        'investment', 'whatsapp_number', 'admin_approved',
+        'investment', 'admin_approved',
         'admin_approved_at', 'sent_at', 'payment_screenshot_preview'
     )
     list_filter = ('admin_approved',)
-    search_fields = ('whatsapp_number', 'investment__profile__user__username', 'investment__profile__user__email')
+    search_fields = ('investment__profile__user__username', 'investment__profile__user__email')
     readonly_fields = ('sent_at', 'admin_approved_at', 'payment_screenshot_preview')
     fields = (
         'investment',
-        'whatsapp_number',
         'payment_screenshot',
         'payment_screenshot_preview',
         'admin_approved',
