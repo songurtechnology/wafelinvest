@@ -16,7 +16,7 @@
   <div class="row g-5 justify-content-center align-items-start">
 
     <!-- Yatırım Formu -->
-    <div class="col-12 col-md-10 col-lg-6">
+    <div class="col-12 col-md-10 col-lg-6 wide-form-card">
       <div class="card p-4 p-md-5 shadow-sm border-0 rounded-4 bg-white h-100">
         <h2 class="text-center text-primary fw-bold mb-4">Yatırım Yap</h2>
 
@@ -170,7 +170,8 @@
     transition: all 0.3s ease-in-out;
   }
 
-  .btn-gradient:hover, .btn-gradient:focus {
+  .btn-gradient:hover,
+  .btn-gradient:focus {
     background: linear-gradient(90deg, #218838, #1e7e34);
     box-shadow: 0 0.5rem 1rem rgba(33, 136, 56, 0.4);
     color: white;
@@ -185,9 +186,25 @@
     content: "\f077" !important; /* up caret */
   }
 
+  /* FORMU LAPTOPTA GENİŞ GÖSTERMEK İÇİN */
+  .wide-form-card {
+    max-width: 700px; /* Laptop için ideal genişlik */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .wide-form-card .card {
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+  }
+
+  /* RESPONSIVE KART PADLERİ */
   @media (max-width: 768px) {
     .card {
       padding: 1.5rem !important;
+    }
+    .wide-form-card {
+      max-width: 90%;
     }
   }
 
@@ -196,13 +213,36 @@
       padding: 1.2rem !important;
     }
 
-    h2, h4, h5 {
+    h2,
+    h4,
+    h5 {
       font-size: 1.25rem;
     }
 
     .btn {
       font-size: 1rem;
     }
+
+    .wide-form-card {
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+  }
+
+  /* KART İÇİN GÖRSEL İYİLEŞTİRME */
+  .card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .card p,
+  .card label {
+    font-size: 1rem;
+  }
+
+  .form-check-label {
+    font-size: 0.95rem;
   }
 </style>
+
 {% endblock %}
