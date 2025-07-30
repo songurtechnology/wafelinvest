@@ -52,9 +52,9 @@
 
         <!-- SADECE TEK BİR FORM OLMALI -->
         <form method="POST" enctype="multipart/form-data" novalidate>
-
           {% csrf_token %}
-          {{ form.amount }}
+
+          {{ form.amount }}  <!-- This is hidden automatically -->
 
           <div class="form-check form-switch mb-4">
             {{ form.agreement }}
@@ -67,8 +67,6 @@
             🚀 Yatırımı Onayla
           </button>
         </form>
-      </div>
-    </div>
 
     <!-- Bilgilendirme Paneli -->
     <div class="col-12 col-md-10 col-lg-5">

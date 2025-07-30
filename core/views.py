@@ -188,6 +188,8 @@ def invest(request, package_id):
             except ValidationError as e:
                 form.add_error(None, e)
         else:
+            print("❌ FORM INVALID")
+            print("FORM ERRORS:", form.errors.as_json())
             messages.error(request, 'Formda hata var.')
     else:
         form = InvestmentForm(profile=profile, package=package)
