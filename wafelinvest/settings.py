@@ -96,8 +96,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Güvenlik ayarları (prod ortamda aktif olmalı)
-SESSION_COOKIE_SECURE = False  # Prod'da True yap
-CSRF_COOKIE_SECURE = False     # Prod'da True yap
+SESSION_COOKIE_SECURE = True  # Prod'da True yap
+CSRF_COOKIE_SECURE = True     # Prod'da True yap
 
 # Login ve redirect ayarları
 LOGIN_URL = 'login'
