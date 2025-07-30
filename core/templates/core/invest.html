@@ -54,7 +54,7 @@
         <form method="POST" enctype="multipart/form-data" novalidate>
 
           {% csrf_token %}
-          <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
+          {{ form.amount }}
 
           <div class="form-check form-switch mb-4">
             {{ form.agreement }}
