@@ -54,8 +54,6 @@
         <form method="POST" enctype="multipart/form-data" novalidate>
 
           {% csrf_token %}
-          <input type="hidden" name="amount" value="{{ package.price|floatformat:2 }}">
-
           <div class="form-check form-switch mb-4">
             {{ form.agreement }}
             <label for="{{ form.agreement.id_for_label }}" class="form-check-label fw-semibold">
@@ -140,7 +138,7 @@
   </div>
 </div>
 
-{% comment %} <style>
+<style>
   .btn-gradient {
     background: linear-gradient(90deg, #28a745, #218838);
     color: white;
@@ -181,5 +179,5 @@
       font-size: 1rem;
     }
   }
-</style> {% endcomment %}
+</style>
 {% endblock %}

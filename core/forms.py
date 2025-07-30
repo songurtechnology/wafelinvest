@@ -88,6 +88,10 @@ class InvestmentForm(forms.ModelForm):
         self._profile = profile
         self._package = package
 
+        if package:
+            self.fields['amount'].initial = package.price
+            self.fields['amount'].widget = forms.HiddenInput()
+
     def clean(self):
         cleaned_data = super().clean()
         agreement = cleaned_data.get('agreement')
