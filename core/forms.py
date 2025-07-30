@@ -88,7 +88,7 @@ class InvestmentForm(forms.ModelForm):
         self._profile = profile
         self._package = package
 
-        if package:
+        if package and 'amount' in self.fields:
             self.fields['amount'].initial = package.price
             self.fields['amount'].widget = forms.HiddenInput()
 

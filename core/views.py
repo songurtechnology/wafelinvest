@@ -11,6 +11,8 @@ from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 import json
+from django.http import HttpResponseServerError
+import traceback
 
 # Modeller ve formlar...
 from .models import (
@@ -164,47 +166,53 @@ def logout_view(request):
 
 @login_required
 def invest(request, package_id):
-    package = get_object_or_404(Package, id=package_id)
-    profile = request.user.profile
+    try:
+        package = get_object_or_404(Package, id=package_id)
+        profile = request.user.profile
 
-    expected_return = calculate_expected_return(package, package.price)
-    print("PRICE:", package.price)
-    print("PROFIT:", package.profit_percent)
-    print("EXPECTED RETURN:", expected_return)
+        expected_return = calculate_expected_return(package, package.price)
+        print("PRICE:", package.price)
+        print("PROFIT:", package.profit_percent)
+        print("EXPECTED RETURN:", expected_return)
 
-    if request.method == 'POST':
-        form = InvestmentForm(request.POST, profile=profile, package=package)
+        if request.method == 'POST':
+            form = InvestmentForm(request.POST, profile=profile, package=package)
 
-        if form.is_valid():
-            investment = form.save(commit=False)
-            investment.profile = profile
-            investment.package = package
-            investment.amount = package.price  # ✅ Force amount for safety
-            investment.expected_return = calculate_expected_return(package, investment.amount)
-            investment.status = Investment.STATUS_PENDING
+            if form.is_valid():
+                investment = form.save(commit=False)
+                investment.profile = profile
+                investment.package = package
+                investment.amount = package.price  # 🔒 Enforce safe value
+                investment.expected_return = calculate_expected_return(package, investment.amount)
+                investment.status = Investment.STATUS_PENDING
 
-            try:
-                investment.clean()
-                investment.save()
-                messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
-                return redirect('core/submit_payment', investment_id=investment.id)
-            except ValidationError as e:
-                form.add_error(None, e)
+                try:
+                    investment.clean()
+                    investment.save()
+                    messages.success(request, 'Yatırım kaydedildi. Şimdi ödeme dekontunuzu yükleyin.')
+                    return redirect('submit_payment', investment_id=investment.id)
+                except ValidationError as e:
+                    form.add_error(None, e)
+            else:
+                print("❌ FORM INVALID")
+                print("FORM ERRORS:", form.errors.as_json())
+                messages.error(request, 'Formda hata var.')
         else:
-            print("❌ FORM INVALID")
-            print("FORM ERRORS:", form.errors.as_json())
-            messages.error(request, 'Formda hata var.')
-    else:
-        form = InvestmentForm(profile=profile, package=package)
+            form = InvestmentForm(profile=profile, package=package)
 
-    return render(request, 'core/invest.html', {
-        'form': form,
-        'package': package,
-        'expected_return': expected_return,
-        'duration': package.duration_days,
-        'description': package.description,
-        'profit_percent': package.profit_percent,
-    })
+        return render(request, 'core/invest.html', {
+            'form': form,
+            'package': package,
+            'expected_return': expected_return,
+            'duration': package.duration_days,
+            'description': package.description,
+            'profit_percent': package.profit_percent,
+        })
+
+    except Exception as e:
+        print("🔥 CRITICAL ERROR in invest view 🔥")
+        print(traceback.format_exc())  # Show full stack trace in console
+        return HttpResponseServerError("500 Internal Server Error")
 
 
 
