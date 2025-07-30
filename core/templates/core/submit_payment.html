@@ -154,49 +154,52 @@
     transform: scale(1.05);
   }
 
-  /* Yönlendirme blokları grid */
-  .platforms-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  .platform-card {
-    flex: 1 1 280px;
-    max-width: 320px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    text-align: center;
-    padding: 30px 20px;
-    transition: box-shadow 0.3s ease;
-  }
-  .platform-card:hover {
-    box-shadow: 0 15px 40px rgba(255, 78, 80, 0.3);
-  }
-  .platform-logo {
-    max-width: 80px;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
-    animation: fade-scale-in 1s ease forwards;
-  }
-  @keyframes fade-scale-in {
-    0% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  .platform-name {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: #ff4e50;
-    margin-bottom: 20px;
-  }
+/* Yönlendirme blokları grid */
+.platforms-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.platform-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 220px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.platform-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.platform-logo {
+width: 80px;
+height: 80px;
+object-fit: contain;
+margin-bottom: 0.75rem;
+}
+
+.platform-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.platform-links a {
+  margin: 0 0.3rem;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.platform-links a:hover {
+  color: #007bff;
+}
+
 
   /* Platform butonları */
   .platform-links a {
@@ -400,6 +403,54 @@
   }
 }
 
+/* MOBİL DOSTU RESPONSIVE */
+@media (max-width: 768px) {
+  .platforms-row {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .platform-card {
+    width: 150px;
+    padding: 1rem;
+  }
+
+  .platform-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.5rem;
+  }
+
+  .platform-name {
+    font-size: 1rem;
+  }
+
+  .platform-links i {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .platform-card {
+    width: 130px;
+    padding: 0.8rem;
+  }
+
+  .platform-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .platform-name {
+    font-size: 0.95rem;
+  }
+
+  .platform-links i {
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 400px) {
   .platform-links a {
     display: block;
@@ -428,7 +479,7 @@
       <p>Yatırımınızın işleme alınabilmesi için lütfen ödeme kanıtınızı paylaşın.</p>
     </div>
 
-          <!-- Platform Yönlendirme Blokları -->
+      <!-- Platform Yönlendirme Blokları -->
       <div class="platforms-row">
 
         <!-- Binance -->
