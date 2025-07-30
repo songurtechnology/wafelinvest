@@ -3,108 +3,124 @@
 {% block title %}Kayıt Ol - WafelInvest{% endblock %}
 
 {% block extra_head %}
-<!-- Bootstrap Icons CDN -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+<meta name="description" content="WafelInvest ile güvenli, hızlı ve kazançlı bir yatırım dünyasına adım atın. Hemen ücretsiz kayıt olun ve yatırım yolculuğunuza başlayın.">
+<meta name="keywords" content="WafelInvest, yatırım, kayıt ol, kazanç, finans, online yatırım, kripto yatırım">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  /* Kapsayıcı ve kart */
+  html {
+    scroll-behavior: smooth;
+  }
+
   .register-card {
     border-radius: 1rem;
     box-shadow: 0 0.75rem 1.5rem rgba(13, 110, 253, 0.25);
     overflow: hidden;
+    background: #ffffff;
+    transition: all 0.4s ease;
   }
 
-  /* Header görsel ve renk */
+  .register-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 1rem 2rem rgba(102,16,242,0.3);
+  }
+
   .register-header {
     background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
     color: white;
     padding: 2.5rem 1.5rem;
     text-align: center;
     font-weight: 700;
-    letter-spacing: 0.05em;
     font-size: 1.75rem;
-    user-select: none;
+    letter-spacing: 0.03em;
   }
 
-  /* Form içi padding */
   .register-body {
     padding: 2rem 2.5rem;
+    background-color: #f8f9fa;
   }
 
-  /* Form label animasyonu */
   .form-floating > label {
     transition: all 0.3s ease;
-    pointer-events: none;
   }
 
-  /* Input focus animasyonu */
   .form-control:focus {
     border-color: #6610f2;
     box-shadow: 0 0 8px rgba(102,16,242,0.6);
   }
 
-  /* Geçerli ve hatalı input ikonları */
   .input-feedback-icon {
     position: absolute;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.25rem;
-    pointer-events: none;
   }
 
-  /* Başarılı input */
   .is-valid ~ .input-feedback-icon {
-    color: #198754; /* Bootstrap green */
+    color: #198754;
   }
 
-  /* Hatalı input */
   .is-invalid ~ .input-feedback-icon {
-    color: #dc3545; /* Bootstrap red */
+    color: #dc3545;
   }
 
-  /* Hata mesajları */
   .invalid-feedback {
     font-size: 0.875rem;
     font-weight: 600;
   }
 
-  /* Güçlü butonlar */
   .btn-primary {
     border-radius: 2rem;
     font-weight: 700;
     padding: 1rem 1.5rem;
     font-size: 1.15rem;
     transition: all 0.3s ease;
-    box-shadow: 0 0.5rem 1rem rgba(13,110,253,0.4);
-  }
-  .btn-primary:hover,
-  .btn-primary:focus {
-    background-color: #6610f2;
-    box-shadow: 0 0.75rem 1.5rem rgba(102,16,242,0.7);
-    outline: none;
-    transform: scale(1.05);
-  }
-  .btn-primary:active {
-    transform: scale(0.98);
+    background: linear-gradient(to right, #6610f2, #0d6efd);
+    border: none;
   }
 
-  /* Link */
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background: linear-gradient(to right, #0d6efd, #6610f2);
+    transform: scale(1.05);
+  }
+
   .form-text a {
     font-weight: 600;
     color: #6610f2;
     text-decoration: none;
-    transition: color 0.3s ease;
   }
-  .form-text a:hover,
-  .form-text a:focus {
+
+  .form-text a:hover {
     color: #0d6efd;
     text-decoration: underline;
   }
 
-  /* Responsive düzen */
-  @media (max-width: 576px) {
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .register-header {
+      font-size: 1.5rem;
+      padding: 2rem 1rem;
+    }
     .register-body {
-      padding: 1.5rem 1.25rem;
+      padding: 1.5rem 1rem;
+    }
+    .btn-primary {
+      font-size: 1rem;
+      padding: 0.75rem 1.25rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .register-header {
+      font-size: 1.35rem;
+    }
+    .form-text {
+      font-size: 0.85rem;
+    }
+    .register-card {
+      margin: 0 1rem;
     }
   }
 </style>
@@ -219,7 +235,6 @@
 
 {% block extra_scripts %}
 <script>
-  // Basit frontend validation ve ikon değiştirme
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registerForm');
     const inputs = form.querySelectorAll('input');
@@ -227,7 +242,6 @@
     inputs.forEach(input => {
       const icon = input.parentElement.querySelector('.input-feedback-icon');
 
-      // Helper: set icon class based on validity
       const updateIcon = () => {
         if (input.classList.contains('is-valid')) {
           icon.className = 'input-feedback-icon bi bi-check-circle-fill text-success';
@@ -238,7 +252,6 @@
         }
       };
 
-      // On input change, run validation
       input.addEventListener('input', () => {
         if (!input.checkValidity()) {
           input.classList.remove('is-valid');
@@ -250,11 +263,9 @@
         updateIcon();
       });
 
-      // Initialize icon on page load
       updateIcon();
     });
 
-    // Submit event frontend validation (HTML5 validation fallback)
     form.addEventListener('submit', e => {
       if (!form.checkValidity()) {
         e.preventDefault();
@@ -272,3 +283,4 @@
   });
 </script>
 {% endblock %}
+
